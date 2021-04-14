@@ -1,10 +1,59 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import HomeScreen from './screens/Home.js'
+import CartScreen from './screens/Cart.js'
+import Feedback from './screens/Feedback.js'
+
 import Products from './products.js'
 
 import axios from "axios";  //fetching weather data
 
+const Stack = createStackNavigator();
+
+export default function App() {
+  return (
+      <NavigationContainer>
+        <Stack.Navigator 
+        initialRouteName="Home"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#dcc2ee',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+        >
+          <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{ 
+            title: 'Overview',
+            headerStyle: {
+              backgroundColor: '#dcc2ee',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}/>
+          <Stack.Screen 
+            name="Cart" 
+            component={CartScreen} 
+            initialParams={{itemId: 0, otherParam: "null", name: "User"}}
+            options={({ route }) => ({ title: `${route.params.name}'s Cart`})}/>
+         <Stack.Screen name="Feedback" component={Feedback}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+  );
+}
+
+/*
 export default function App() {
   let [welcome, setWelcome] = useState("null")
   
@@ -39,7 +88,7 @@ export default function App() {
     console.log(msg)
     setWelcome(String(msg))
   }
-
+  
   return (
     <View style={styles.container}>
       <Text>{welcome}</Text>
@@ -48,7 +97,7 @@ export default function App() {
     </View>
   );
 }
-
+*/
 const styles = StyleSheet.create({
   container: {
     flex: 1,
