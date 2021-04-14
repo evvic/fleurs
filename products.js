@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Text, View, Button} from "react-native";
 
+import { username, password, auth } from './API_KEY.js'
+
+
 function Products() {
 
     let [iconimg, setIconimg] = useState(null)  //weather icon description
@@ -8,10 +11,6 @@ function Products() {
     async function parseProducts() {
         console.log("parseProducts")
         let url = `https://www.floristone.com/api/rest/flowershop/getproducts?category=lr`
-        
-        const username = "386866" //API key
-        const password = "ENXg1E" //API password
-        const auth = btoa(`${username}:${password}`) //base64 encode given string
 
         const options = {
             headers: {
