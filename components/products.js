@@ -6,7 +6,7 @@ import { username, password, auth } from '../API_KEY.js'
 import Product from "./product.js";
 
 
-function Products() {
+function Products(props) {
     let [flowers, setFlowers] = useState([])    //array of flowers
     let [iconimg, setIconimg] = useState(null)  //weather icon description
     let [total, setTotal] = useState(0)         //number of flowers
@@ -15,8 +15,9 @@ function Products() {
     async function parseProducts() {
         console.log("parseProducts")
         /* JSON PRODUCT OPTIONS */
-        let category = "lr"
-        let count = 20
+        console.log("products category: " + props.category)
+        let category = props.category
+        let count = 12
         let start = 1
         let url = `https://www.floristone.com/api/rest/flowershop/getproducts?category=${category}&count=${count}&start${start}`
 
@@ -29,7 +30,17 @@ function Products() {
         const data = await fetch(url, options) 
         const obj = await data.json()
         console.log(obj)
-        total = await obj.TOTAL
+        total = await obj.total
+
+        //temp test if categories has an api to be retrieved
+        /*
+        let url2 = "https://www.floristone.com/api/rest/flowershop/getcategories?"
+        const data2 = await fetch(url2, options)
+        const obj2 = await data2.json()
+        console.log(obj2)
+        */
+        //end test
+
         //setFlowers(obj.Products)
         let temp = obj.PRODUCTS
         console.log(flowers)
@@ -52,7 +63,7 @@ function Products() {
         return () => {
             console.log("unmounted")
         };
-    }, [])
+    }, [props])
 
     return (
         <View > 

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Text, View, Button} from "react-native";
+import "./product.css";
 
 import { username, password, auth } from '../API_KEY.js'
-
 
 function Product(props) {
 
