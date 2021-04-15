@@ -8,9 +8,9 @@ import HomeScreen from './screens/Home.js'
 import CartScreen from './screens/Cart.js'
 import Feedback from './screens/Feedback.js'
 
-import Products from './products.js'
+//import Products from './products.js'
 
-import axios from "axios";  //fetching weather data
+//import axios from "axios";  //fetching weather data
 
 const Stack = createStackNavigator();
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
 
-import Products from './../products.js'
+import Products from './../components/products.js'
 import { username, password, auth } from './../API_KEY.js'
 
 // the navigation prop is passed in to every screen component
