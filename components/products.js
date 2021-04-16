@@ -8,9 +8,7 @@ import Product from "./product.js";
 
 function Products(props) {
     let [flowers, setFlowers] = useState([])    //array of flowers
-    let [iconimg, setIconimg] = useState(null)  //weather icon description
     let [total, setTotal] = useState(0)         //number of flowers
-    
 
     async function parseProducts() {
         console.log("parseProducts")
@@ -29,24 +27,16 @@ function Products(props) {
         
         const data = await fetch(url, options) 
         const obj = await data.json()
-        console.log(obj)
-        total = await obj.total
-
-        //temp test if categories has an api to be retrieved
-        /*
-        let url2 = "https://www.floristone.com/api/rest/flowershop/getcategories?"
-        const data2 = await fetch(url2, options)
-        const obj2 = await data2.json()
-        console.log(obj2)
-        */
-        //end test
-
-        //setFlowers(obj.Products)
-        let temp = obj.PRODUCTS
-        console.log(flowers)
-        //setTotal(obj.TOTAL)
-        console.log("total: " + total)
-        return temp
+        if("errors" in obj) {
+            console.log("ERROR CAUGHT")
+            return {NAME: "error", DESCRIPTION: obj.errors}
+        }
+        else {
+            //return object array of products
+            total = await obj.total
+            let temp = obj.PRODUCTS
+            return temp
+        }        
     }  
 
     async function purgatory() {
@@ -69,7 +59,7 @@ function Products(props) {
         <View > 
             <Text>Products</Text>
             <FlatList 
-                style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', flexGrow: 0}}
+                //style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', flexGrow: 0}}
                 data={flowers}
                 renderItem={({item}) => <Product obj={item} />}
             />

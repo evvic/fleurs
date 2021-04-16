@@ -9,25 +9,26 @@ import { returnCategories } from './../getcategories.js'
 import { Picker } from '@react-native-picker/picker'; //npm install @react-native-picker/picker --save
 import { FlatList } from 'react-native-gesture-handler';
 
+//https://reactnativeexample.com/a-simple-and-customizable-react-native-dropdown-created-using-react-native-modal/
+//doesn't seem to work on web
+import { Dropdown} from 'sharingan-rn-modal-dropdown'
+
+import { data } from '../data.js'
 
 // the navigation prop is passed in to every screen component
 function HomeScreen({ navigation, route }) {
     let [welcome, setWelcome] = React.useState("null")
-    const [category, setCategory] = React.useState("null");
+    const [category, setCategory] = React.useState("bd");
     const [categories, setCategories] = React.useState([])
     const [listCategories, setListCategories] = React.useState([<Picker.Item label="temp" value="temp" />])
     const [loaded, setLoaded] = React.useState(false)
 
+    const onChangeSS = (value) => {
+      setCategory(value.toString());
+    };
+
     React.useEffect(() => {
         console.log("mounted")
-
-        var swag = [
-          {DISPLAY:"Bday", CATEGORY: "bd"},
-          {DISPLAY:"Anniversary", CATEGORY: "an"},
-          {DISPLAY:"Funeral", CATEGORY: "fr"},
-        ]
-
-        
         
         StartUp()
 
@@ -67,37 +68,49 @@ function HomeScreen({ navigation, route }) {
     }
 
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View>
             <Text>Home Zcreen</Text>
+            <Button
+                title="Write feedback"
+                onPress={() => navigation.navigate('Feedback')}
+            />
             {(loaded)? 
             <Picker
+              style={styles.dropdown_container}
               selectedValue={category}
-              onValueChange={(itemValue, itemIndex) =>
-                setCategory(itemValue)
+              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)
               }>
-                {/* listCategories */}
                 <Picker.Item label={"Birthday"} value={"bd"} />
                 <Picker.Item label={"Anniversary"} value={"an"} />
                 <Picker.Item label={"Everyday"} value={"ao"} />
                 <Picker.Item label={"Thank You"} value={"ty"} />
             </Picker>
             :
-            <p>loading...</p>}
+            <Text>loading...</Text>}
             
-            <Button
-                title="Write feedback"
-                onPress={() => navigation.navigate('Feedback')}
-            />
+            
             <Text>{welcome}</Text>
             {(category)?
             <Products category={category}/>
             :
-            <p>select category</p>
+            <Text>select category</Text>
             }
             
         </View>
     );
 }
+//works on android but not web
+{/* <View style={styles.dropdown_container}>
+  <Dropdown
+    label="Simple dropdown"
+    data={data}
+    value={category}
+    onChange={onChangeSS}
+  />
+</View> */}
+
+//works in web but not in android?
+
 
 async function Intro() {
   const url = "https://www.floristone.com/api/rest/floristone/welcome"
@@ -116,6 +129,12 @@ async function Intro() {
 }
 
 const styles = StyleSheet.create({
+  dropdown_container: {
+    paddingTop: 30,
+    marginLeft: 20,
+    marginRight: 20,
+    flex: 1,
+  },
     container: {
       flex: 1,
       backgroundColor: '#fff',
