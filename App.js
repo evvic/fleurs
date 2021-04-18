@@ -19,6 +19,7 @@ export default function App() {
   //cart
   const [sessionID, setSessionID] = useState()
 
+  //moved create cart ID to Home, then lifts state up
   async function CreateCart() {
     var api = axios.create({
       baseURL: 'https://www.floristone.com/api/rest',
