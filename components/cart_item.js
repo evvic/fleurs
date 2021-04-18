@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigation } from '@react-navigation/native'; 
 import { StyleSheet, Text, View, Image, Button } from "react-native";
 import { Card,  } from 'react-native-elements' //npm install react-native-elements
 import { username, password, auth } from '../API_KEY.js'
@@ -12,6 +13,7 @@ var api = axios.create({
 });
 
 function CartItem(props) {
+    const navigation = useNavigation(); //navigation hook
     let [loaded, setLoaded] = useState(false)
     let [product, setProduct] = useState({})
 
@@ -65,6 +67,12 @@ function CartItem(props) {
                 <Text>{product.NAME}</Text>
                 <Text>${product.PRICE}</Text>
                 <Text>{product.DESCRIPTION}</Text>
+                <Button
+                    title="Place order"
+                    onPress={() => navigation.navigate('Ordering', {
+                        product: product
+                    })}
+                />
             </View>
             :
             <Text>Loading...</Text>
