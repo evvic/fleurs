@@ -155,18 +155,18 @@ async function Intro() {
 }
 
 const styles = StyleSheet.create({
-  dropdown_container: {
-    paddingTop: 30,
-    marginLeft: 20,
-    marginRight: 20,
-    flex: 1,
-  },
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+    dropdown_container: {
+        paddingTop: 30,
+        marginLeft: 20,
+        marginRight: 20,
+        flex: 1,
     },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        },
   });
 
 export default HomeScreen;
