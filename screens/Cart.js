@@ -3,13 +3,15 @@ import { View, Text, Button } from 'react-native';
 
 function CartScreen({ route, navigation }) {
     //get params. If none were passed, inital ones will be used
-    const { itemId, otherParam } = route.params;
+    const { itemId, CartID } = route.params;
+
+    console.log("cart screen id: " + CartID)
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Cart</Text>
         <Text>itemId: {JSON.stringify(itemId)}</Text>
-        <Text>otherParam: {JSON.stringify(otherParam)}</Text>
+        <Text>otherParam: {JSON.stringify(CartID)}</Text>
         <Button
         title="Go to Cart"
         onPress={() => navigation.push('Cart', {

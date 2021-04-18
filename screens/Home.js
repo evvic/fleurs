@@ -4,6 +4,7 @@ import { StyleSheet, View, Text, Button } from 'react-native';
 import Products from './../components/products.js'
 import { username, password, auth } from './../API_KEY.js'
 import { returnCategories } from './../getcategories.js'
+import axios from 'axios';
 
 //https://github.com/react-native-picker/picker
 import { Picker } from '@react-native-picker/picker'; //npm install @react-native-picker/picker --save
@@ -17,25 +18,47 @@ import { data } from '../data.js'
 
 // the navigation prop is passed in to every screen component
 function HomeScreen({ navigation, route }) {
+    //get params. If none were passed, inital ones will be used
+    const { updateCart } = route.params; //lift-up state
+    const [cartID, setCartId] = React.useState()
     let [welcome, setWelcome] = React.useState("null")
     const [category, setCategory] = React.useState("bd");
     const [categories, setCategories] = React.useState([])
     const [listCategories, setListCategories] = React.useState([<Picker.Item label="temp" value="temp" />])
     const [loaded, setLoaded] = React.useState(false)
 
-    const onChangeSS = (value) => {
+    /* const onChangeSS = (value) => {
       setCategory(value.toString());
-    };
+    }; */
+
+    async function CreateCart() {
+        var api = axios.create({
+          baseURL: 'https://www.floristone.com/api/rest',
+          timeout: 2000,
+          headers: {'Authorization': `Basic ${auth}`, 'Content-type': 'application/json'}
+        });
+    
+        const data = await api.post("/shoppingcart") 
+        const obj = await data.data
+    
+        let temp = await obj.SESSIONID
+        updateCart(temp)
+        console.log("updateCart " + temp)
+        return temp
+    }
 
     React.useEffect(() => {
-        console.log("mounted")
+        console.log("home mounted")
         
         StartUp()
-
+    
         if (route.params?.feedback) {
         // Post updated, do something with `route.params.feedback`
         // For example, send the post to the server
         console.log(route.params?.feedback)
+        }
+        return () => {
+            console.log("home unmounted")
         }
     }, [route.params?.feedback]);
 
@@ -53,19 +76,22 @@ function HomeScreen({ navigation, route }) {
     }, [navigation]);
 
     async function StartUp() {
-      let temp = await Intro()
-      setWelcome(temp)
+        let temp = await Intro()
+        setWelcome(temp)
 
-      temp = await returnCategories()
-      setCategories(temp)
+        temp = await CreateCart()
+        setCartId(temp)
 
-      console.log("teehee" + categories)
+        temp = await returnCategories()
+        setCategories(temp)
 
-      setListCategories(temp.map(item => {
-        <Picker.Item label={item.DISPLAY} value={item.CATEGORY} />
-      }))
-      setLoaded(true)
-    }
+        console.log("teehee" + categories)
+
+        setListCategories(temp.map(item => {
+            <Picker.Item label={item.DISPLAY} value={item.CATEGORY} />
+        }))
+        setLoaded(true)
+        }
 
     return (
         <View>
@@ -91,7 +117,7 @@ function HomeScreen({ navigation, route }) {
             
             <Text>{welcome}</Text>
             {(category)?
-            <Products category={category}/>
+            <Products category={category} sessionid={cartID}/>
             :
             <Text>select category</Text>
             }

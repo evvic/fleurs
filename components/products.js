@@ -11,9 +11,9 @@ function Products(props) {
     let [total, setTotal] = useState(0)         //number of flowers
 
     async function parseProducts() {
-        console.log("parseProducts")
+        //console.log("parseProducts")
         /* JSON PRODUCT OPTIONS */
-        console.log("products category: " + props.category)
+        //console.log("products category: " + props.category)
         let category = props.category
         let count = 12
         let start = 1
@@ -57,11 +57,11 @@ function Products(props) {
 
     return (
         <View > 
-            <Text>Products</Text>
+            <Text>Products {props.sessionid}</Text>
             <FlatList 
                 //style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', flexGrow: 0}}
                 data={flowers}
-                renderItem={({item}) => <Product obj={item} />}
+                renderItem={({item}) => <Product obj={item} sessionid={props.sessionid}/>}
             />
         </View>
     );

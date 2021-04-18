@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import axios from 'axios';
 
 import HomeScreen from './screens/Home.js'
 import CartScreen from './screens/Cart.js'
 import Feedback from './screens/Feedback.js'
+import { username, password, auth } from './API_KEY.js' //base64 encoded API key
 
 //https://github.com/stephy/CalendarPicker
 // ^ use this for calnedar later?
@@ -14,6 +16,47 @@ import Feedback from './screens/Feedback.js'
 const Stack = createStackNavigator();
 
 export default function App() {
+  //cart
+  const [sessionID, setSessionID] = useState()
+
+  async function CreateCart() {
+    var api = axios.create({
+      baseURL: 'https://www.floristone.com/api/rest',
+      timeout: 2000,
+      headers: {'Authorization': `Basic ${auth}`, 'Content-type': 'application/json'}
+    });
+
+    const data = await api.post("/shoppingcart") 
+    const obj = await data.data
+
+    let temp = await obj.SESSIONID
+    setSessionID(temp)
+  }
+
+  async function DestroyCart() {
+    var api = axios.create({
+      baseURL: 'https://www.floristone.com/api/rest',
+      timeout: 2000,
+      headers: {'Authorization': `Basic ${auth}`}
+    });
+
+    const data = await api.delete(`/shoppingcart?sessionid=${sessionID}`)
+    const obj = await data.data
+
+    setSessionID()
+    console.log(obj)
+  }
+
+  useEffect(() => {
+    //mount and create cart
+    //CreateCart()
+
+    //unmount and destroy cart
+    return () => {
+      DestroyCart()
+    }
+  }, [])
+
   return (
       <NavigationContainer>
         <Stack.Navigator 
@@ -31,8 +74,9 @@ export default function App() {
           <Stack.Screen 
           name="Home" 
           component={HomeScreen} 
+          initialParams={{CartID: sessionID, updateCart: setSessionID}}
           options={{ 
-            title: 'Overview',
+            title: 'Fleurs',
             headerStyle: {
               backgroundColor: '#dcc2ee',
             },
@@ -44,8 +88,8 @@ export default function App() {
           <Stack.Screen 
             name="Cart" 
             component={CartScreen} 
-            initialParams={{itemId: 0, otherParam: "null", name: "User"}}
-            options={({ route }) => ({ title: `${route.params.name}'s Cart`})}/>
+            initialParams={{itemId: 0, CartID: sessionID, name: "User"}}
+            options={({ route }) => ({ title: `${route.params.name}'s Basket`})}/>
          <Stack.Screen name="Feedback" component={Feedback}/>
         </Stack.Navigator>
       </NavigationContainer>
