@@ -21,6 +21,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
     "react-native-androw": "^0.0.34",
     "react-native-apple-card-views": "^2.1.3",
+    "react-native-calendars": "^1.1257.0",
     "react-native-elements": "^3.3.2",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-input-style": "^1.0.2",
