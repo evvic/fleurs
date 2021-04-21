@@ -11,6 +11,7 @@ function OrderScreen({ route, navigation }) {
     const { product } = route.params;
     const [cartItems, setCartItems] = React.useState([])
     var [zipCode, setZipCode] = React.useState()
+    let [selectedDay, setSelectedDay] = React.useState()
 
     React.useEffect(() => {
 
@@ -19,14 +20,12 @@ function OrderScreen({ route, navigation }) {
     /*
     In this one screen maybe have a component for each sttep of the payment 
     process that toggles to the next when each is completed
-
-
     */
 
     return (
         <View>
             <Text>Ordering Page {product.NAME}</Text> 
-            <GetZipCode setZipCode={setZipCode} zipCode={zipCode} />
+            <GetZipCode setZipCode={setZipCode} zipCode={zipCode} setSelectedDay={setSelectedDay} selectedDay={selectedDay}/>
          </View>
     );
 }
