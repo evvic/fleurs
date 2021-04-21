@@ -11,8 +11,8 @@ import Feedback from './screens/Feedback.js'
 import { username, password, auth } from './API_KEY.js' //base64 encoded API key
 import OrderScreen from './screens/Ordering.js';
 
-//https://github.com/stephy/CalendarPicker
-// ^ use this for calnedar later?
+//https://github.com/sbycrosz/react-native-credit-card-input
+// ^ use this for cc info?
 
 const Stack = createStackNavigator();
 

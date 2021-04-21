@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Image, Button } from "react-native";
+import { useNavigation } from '@react-navigation/native'; 
+import { withNavigation } from '@react-navigation/native';  
+import { NavigationContext } from '@react-navigation/native';
+
+import { StyleSheet, Text, View, Image, Button, Keyboard,
+    TouchableWithoutFeedback } from "react-native";
 import { username, password, auth } from '../API_KEY.js'
 import axios from 'axios';
 import moment from 'moment'
@@ -22,16 +27,9 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 //npm install --save react-native-calendar-picker
 import CalendarPicker from 'react-native-calendar-picker';
 
-/*
-    FIX CALENDAR FOR PHONE
-    FormatAvailableDates() WILL ADD THE DATES TO STATE
-    LIKE HOW THEY SHOULD BE ADDED TO markedDates
-    https://github.com/wix/react-native-calendars 
-
-*/
-
-
 function GetZipCode(props) {
+    const navigation = useNavigation(); //navigation hook
+
     let [loaded, setLoaded] = useState(false)
     let [product, setProduct] = useState({})
     let [markedDates, setMarkedDates] = useState([])
@@ -73,16 +71,16 @@ function GetZipCode(props) {
     return (
         <View>
             <Text>Enter delivery ZIP code: </Text>
-            
-            <TextInput style={{width:"60%"}}
-                label="ZIP code"
-                value={props.zipCode}
-                keyboardType = 'numeric'
-                //regex replace removes anything non numeric from string input
-                onChangeText={text => props.setZipCode(text.replace(/\D/g,''))}
-                maxLength={5}
-            />
-
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <TextInput style={{width:"60%"}}
+                    label="ZIP code"
+                    value={props.zipCode}
+                    keyboardType = 'numeric'
+                    //regex replace removes anything non numeric from string input
+                    onChangeText={text => props.setZipCode(text.replace(/\D/g,''))}
+                    maxLength={5}
+                />
+            </TouchableWithoutFeedback>
             {(props.zipCode && maxDate && props.zipCode.toString().length == 5)?
             <>
                 <Text>CALENDAR HERE</Text>
@@ -104,7 +102,8 @@ function GetZipCode(props) {
                     <Text>Selected delivery day is {props.selectedDay}.</Text>
                     <Button
                         title="Deliver"
-                        onPress={console.log("BUTTON PRESSED")}
+                        //because this is a nested navigator, it's a bit complicated...
+                        onPress={() => navigation.navigate('Ordering', { screen: 'Address' })}
                     />
                 </>
                 :

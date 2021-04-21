@@ -82,6 +82,7 @@ function HomeScreen({ navigation, route }) {
         temp = await CreateCart()
         setCartId(temp)
 
+        
         temp = await returnCategories()
         setCategories(temp)
 

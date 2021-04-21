@@ -1,17 +1,36 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+
 import axios from 'axios';
 import { username, password, auth } from './../API_KEY.js'
 
 //ordering compnents
-import GetZipCode from '../components/get_zip_code.js'
+import GetZipCode from '../ordering_screens/get_zip_code.js'
+import GetAddress from '../ordering_screens/address.js'
+
+const Tab = createStackNavigator();
 
 function OrderScreen({ route, navigation }) {
     //get params. If none were passed, inital ones will be used
     const { product } = route.params;
-    const [cartItems, setCartItems] = React.useState([])
-    var [zipCode, setZipCode] = React.useState()
-    let [selectedDay, setSelectedDay] = React.useState()
+    const [cartItems, setCartItems] = useState([])
+    var [zipCode, setZipCode] = useState()
+    let [selectedDay, setSelectedDay] = useState()
+    let [billingAddress, setBillingAddress] = useState({
+        name: "",
+        institution: "",
+        address1: "",
+        address2: "",
+        city: "",
+        state: "",
+        zip: "",
+        country: "",
+        phone: ""
+    })
+    let [deliveryAddress, setDeliveryAddress] = useState({
+        name: "", institution: "", address1: "", address2: "", city: "", state: "",
+        zip: "", country: "", phone: "" })
 
     React.useEffect(() => {
 
@@ -23,11 +42,24 @@ function OrderScreen({ route, navigation }) {
     */
 
     return (
-        <View>
+        <Tab.Navigator>
+            <Tab.Screen name="Delivery" options={{ headerShown: false }}>
+                {(props) => <GetZipCode setZipCode={setZipCode} zipCode={zipCode}
+                    setSelectedDay={setSelectedDay} selectedDay={selectedDay}/>}
+            </Tab.Screen>
+            <Tab.Screen name="Address" options={{ headerShown: false }}>
+                {(props) => <GetAddress zipCode={zipCode} selectedDay={selectedDay}
+                    setDeliveryAddress={setDeliveryAddress} deliveryAddress={deliveryAddress}/>}
+            </Tab.Screen>
+
+        </Tab.Navigator>
+        
+    );
+
+    {/* <View>
             <Text>Ordering Page {product.NAME}</Text> 
             <GetZipCode setZipCode={setZipCode} zipCode={zipCode} setSelectedDay={setSelectedDay} selectedDay={selectedDay}/>
-         </View>
-    );
+         </View> */}
 }
 
 export default OrderScreen;
