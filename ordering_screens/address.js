@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useNavigation } from '@react-navigation/native'; 
 import { StyleSheet, Text, View, Image, Button } from "react-native";
 import { username, password, auth } from '../API_KEY.js'
 import axios from 'axios';
-import moment from 'moment'
+import { styles } from '../styles/global.js'; //CSS equivalent
 
 //npm i react-native-keyboard-aware-scroll-view --save
 //^ important to make forms easier to fill
@@ -11,6 +12,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 //npm install formik
 import { Formik } from 'formik';
 
+//npm install yup ~ form input validation
+import * as yup from 'yup'
 
 //npm install react-native-paper
 import { TextInput } from 'react-native-paper';
@@ -18,18 +21,39 @@ import { TextInput } from 'react-native-paper';
 //npm install @vtex/address-form
 import AddressContainer from '@vtex/address-form/lib/AddressContainer'
 
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
+const ReviewSchema = yup.object({
+    name: yup.string().required().min(1),
+    institution: yup.string().notRequired(),
+    address1: yup.string().required(),
+    address2: yup.string().notRequired(),
+    city: yup.string().required(),
+    state: yup.string().required().length(2),
+    //zip
+    //country (code)
+    phone: yup.string().required().matches(phoneRegExp, "Phone number is not valid.")
+})
 
 function GetAddress(props) {
+    const navigation = useNavigation(); //navigation hook
 
     const AddAddress = (addy) => {
+        // deliveryAddress will still appear empty in here but it was updated
         props.setDeliveryAddress({
-            
+            name: addy.name,
+            institution: addy.institution,
+            address1: addy.address1,
+            address2: addy.address2,
+            city: addy.city,
+            state: addy.state,
+            zip: addy.zip,
+            country: addy.country,
+            phone: addy.phone
         })
     }
 
     React.useEffect(() => {
-        // this is called when the component is mounted
-        console.log("zip code changing")
    
         //anything returned happens when component is unmounted
         return () => {
@@ -41,29 +65,39 @@ function GetAddress(props) {
         <KeyboardAwareScrollView>
             <Formik
                 initialValues={{ name: '', institution: '', address1: '', address2: '',
-            city: '', state: '', zip: props.zipCode, country: 'US', phone: '' }}
-                onSubmit={values => AddAddress(values)}
+                    city: '', state: '', zip: props.zipCode, country: 'US', phone: '' }}
+                onSubmit={values => {
+                    console.log("submitting address...")
+                    AddAddress(values)
+                    //when address is filled go to billing
+                    navigation.navigate('Ordering', { screen: 'Billing' })}
+                }
+                validationSchema={ReviewSchema}
             >
-                {({ handleChange, handleBlur, handleSubmit, values }) => (
+                {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                 <View>
                     <TextInput
-                    label="Name"
-                    onChangeText={handleChange('name')}
-                    onBlur={handleBlur('name')}
-                    value={values.name}
+                        label="Name"
+                        error={(errors.address1)? true : false }
+                        onChangeText={handleChange('name')}
+                        onBlur={handleBlur('name')}
+                        value={values.name}
                     />
+                    <Text style={styles.error_text}>{touched.name && errors.name}</Text>
                     <TextInput
-                    label="institution"
-                    onChangeText={handleChange('institution')}
-                    onBlur={handleBlur('institution')}
-                    value={values.institution}
+                        label="institution"
+                        onChangeText={handleChange('institution')}
+                        onBlur={handleBlur('institution')}
+                        value={values.institution}
                     />
                     <TextInput
                         label="Address 1"
+                        error={(errors.address1)? true : false }
                         onChangeText={handleChange('address1')}
                         onBlur={handleBlur('address1')}
                         value={values.address1}
                     />
+                    <Text style={styles.error_text}>{touched.address1 && errors.address1}</Text>
                     <TextInput
                         label="Address 2"
                         onChangeText={handleChange('address2')}
@@ -71,25 +105,30 @@ function GetAddress(props) {
                         value={values.address2}
                     />
                     <TextInput
+                        error={(errors.city)? true : false }
                         label="City"
                         onChangeText={handleChange('city')}
                         onBlur={handleBlur('city')}
                         value={values.city}
                     />
+                    <Text style={styles.error_text}>{touched.city && errors.city}</Text>
                     <TextInput
-                        label="State"
+                        label="State Code"
                         onChangeText={handleChange('state')}
                         onBlur={handleBlur('state')}
                         value={values.state}
                     />
+                    <Text style={styles.error_text}>{touched.state && errors.state}</Text>
                     <TextInput
                         label="ZIP code"
+                        disabled={true}
                         onChangeText={handleChange('zip')}
                         onBlur={handleBlur('zip')}
                         value={values.zip}
                     />
                     <TextInput
                         label="Country"
+                        editable={false}
                         onChangeText={handleChange('country')}
                         onBlur={handleBlur('country')}
                         value={values.country}
@@ -101,6 +140,7 @@ function GetAddress(props) {
                         onBlur={handleBlur('phone')}
                         value={values.phone}
                     />
+                    <Text style={styles.error_text}>{touched.phone && errors.phone}</Text>
                     <Button onPress={handleSubmit} title="Submit" />
                 </View>
                 )}
@@ -108,31 +148,5 @@ function GetAddress(props) {
         </KeyboardAwareScrollView>
     );
 }
-
-var api = axios.create({
-    baseURL: 'https://www.floristone.com/api/rest',
-    timeout: 2000,
-    headers: {'Authorization': `Basic ${auth}`}
-});
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    box: {
-        borderWidth: 5,
-        borderColor: '#777',
-        color: '#000',
-        justifyContent: 'center',
-        flex: 1,
-        width: '50%',
-        height: 80,
-        marginTop: 20
-    }
-});
 
 export default GetAddress;

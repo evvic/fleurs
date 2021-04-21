@@ -4,7 +4,7 @@ import { withNavigation } from '@react-navigation/native';
 import { NavigationContext } from '@react-navigation/native';
 
 import { StyleSheet, Text, View, Image, Button, Keyboard,
-    TouchableWithoutFeedback } from "react-native";
+    TouchableWithoutFeedback, ScrollView } from "react-native";
 import { username, password, auth } from '../API_KEY.js'
 import axios from 'axios';
 import moment from 'moment'
@@ -69,9 +69,10 @@ function GetZipCode(props) {
     }
 
     return (
-        <View>
+        <ScrollView>
             <Text>Enter delivery ZIP code: </Text>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+{/*             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>*/}        
+            <View>  
                 <TextInput style={{width:"60%"}}
                     label="ZIP code"
                     value={props.zipCode}
@@ -80,7 +81,8 @@ function GetZipCode(props) {
                     onChangeText={text => props.setZipCode(text.replace(/\D/g,''))}
                     maxLength={5}
                 />
-            </TouchableWithoutFeedback>
+                </View>      
+{/*             </TouchableWithoutFeedback> */}        
             {(props.zipCode && maxDate && props.zipCode.toString().length == 5)?
             <>
                 <Text>CALENDAR HERE</Text>
@@ -115,7 +117,7 @@ function GetZipCode(props) {
             </>
         :
         <></>}
-        </View>
+        </ScrollView>
     );
 }
 

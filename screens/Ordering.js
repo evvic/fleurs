@@ -8,6 +8,7 @@ import { username, password, auth } from './../API_KEY.js'
 //ordering compnents
 import GetZipCode from '../ordering_screens/get_zip_code.js'
 import GetAddress from '../ordering_screens/address.js'
+import GetBilling from '../ordering_screens/billing.js'
 
 const Tab = createStackNavigator();
 
@@ -50,6 +51,10 @@ function OrderScreen({ route, navigation }) {
             <Tab.Screen name="Address" options={{ headerShown: false }}>
                 {(props) => <GetAddress zipCode={zipCode} selectedDay={selectedDay}
                     setDeliveryAddress={setDeliveryAddress} deliveryAddress={deliveryAddress}/>}
+            </Tab.Screen>
+            <Tab.Screen name="Billing" options={{ headerShown: false }}>
+                {(props) => <GetBilling selectedDay={selectedDay} deliveryAddress={deliveryAddress}
+                setBillingAddress={setBillingAddress} billingAddress={billingAddress}/>}
             </Tab.Screen>
 
         </Tab.Navigator>
