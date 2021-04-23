@@ -10,10 +10,6 @@ import axios from 'axios';
 import { Picker } from '@react-native-picker/picker'; //npm install @react-native-picker/picker --save
 import { FlatList } from 'react-native-gesture-handler';
 
-//https://reactnativeexample.com/a-simple-and-customizable-react-native-dropdown-created-using-react-native-modal/
-//doesn't seem to work on web
-import { Dropdown} from 'sharingan-rn-modal-dropdown'
-
 import { data } from '../data.js'
 
 // the navigation prop is passed in to every screen component

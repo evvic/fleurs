@@ -9,20 +9,8 @@ import { username, password, auth } from '../API_KEY.js'
 import axios from 'axios';
 import moment from 'moment'
 
-//npm install --save reinput
-//import Reinput from "reinput" //broken
-
-//npm install react-native-input-style --save
-import Input from 'react-native-input-style';   //broken
-
-//npm install react-native-masked-text --save
-import { TextInputMask } from 'react-native-masked-text'
-
 //npm install react-native-paper
 import { TextInput } from 'react-native-paper';
-
-//npm install --save react-native-calendars
-import {Calendar, LocaleConfig} from 'react-native-calendars';
 
 //npm install --save react-native-calendar-picker
 import CalendarPicker from 'react-native-calendar-picker';
@@ -44,8 +32,6 @@ function GetZipCode(props) {
             console.log("zip code has 5 nums")
     
             FormatAvailableDates(props.zipCode)
-            
-
         }
 
         //anything returned happens when component is unmounted
@@ -64,8 +50,6 @@ function GetZipCode(props) {
             setMaxDate(moment(datesArr[datesArr.length - 1], 'MM/DD/YYYY', true).format())
             
         }
-        
-
     }
 
     return (
@@ -146,14 +130,7 @@ async function GetDeliveryDates(zip) {
     console.log(obj.DATES)
     //let temp = await obj.PRODUCTS[0]
 
-
-
     return obj.DATES
-}
-
-function ReformatAPIDate(apiDate) {
-    //returns date formatted for moment.js
-    moment('01/01/2016', 'MM/DD/YYYY', true).format()
 }
 
 const styles = StyleSheet.create({

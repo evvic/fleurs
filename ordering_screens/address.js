@@ -18,9 +18,6 @@ import * as yup from 'yup'
 //npm install react-native-paper
 import { TextInput } from 'react-native-paper';
 
-//npm install @vtex/address-form
-import AddressContainer from '@vtex/address-form/lib/AddressContainer'
-
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 const ReviewSchema = yup.object({
