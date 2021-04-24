@@ -5,8 +5,6 @@ import axios from 'axios';
 import moment from 'moment'
 import ContentView from './content_view.js'
 
-//npm install authorizenet
-
 //npm install react-native-authorize-net --legacy-peer-deps             //uninstalled
 //npm install react-native-reliantid-authorize-net --legacy-peer-deps   //uninstalled
 
@@ -43,7 +41,7 @@ function GetBilling(props) {
         console.log('Accept URL', keyObj.AUTHORIZENET_URL)
         //const ACCEPTJS = require(keyObj.AUTHORIZENET_URL)
         //const ACCEPTJS = await import(keyObj.AUTHORIZENET_URL)
-        const Accept = import('authorizenet')
+        //const Accept = import('authorizenet')
 
         let authData = await {
             clientKey: keyObj.AUTHORIZENET_KEY,

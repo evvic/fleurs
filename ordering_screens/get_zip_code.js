@@ -94,7 +94,7 @@ function GetZipCode(props) {
                 </>
                 :
                 <>
-                    <Text>Selected a delivery day.</Text>
+                    <Text>Selected a delivery day. Bruv</Text>
                 </>
                 }
     

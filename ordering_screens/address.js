@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigation } from '@react-navigation/native'; 
-import { StyleSheet, Text, View, Image, Button } from "react-native";
-import { username, password, auth } from '../API_KEY.js'
-import axios from 'axios';
+import { Text, View, Image, Button } from "react-native";
 import { styles } from '../styles/global.js'; //CSS equivalent
 
 //npm i react-native-keyboard-aware-scroll-view --save
@@ -49,14 +47,6 @@ function GetAddress(props) {
             phone: addy.phone
         })
     }
-
-    React.useEffect(() => {
-   
-        //anything returned happens when component is unmounted
-        return () => {
-            console.log("product unmounted")
-        };
-    }, [])
 
     return (
         <KeyboardAwareScrollView>

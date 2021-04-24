@@ -24,7 +24,7 @@ export const styles = StyleSheet.create ({
     error_text: {
         color: 'crimson',
         fontWeight: 'bold',
-        marginBottom: '5',
+        marginBottom: 5,
         textAlign: 'center'
     }
 });

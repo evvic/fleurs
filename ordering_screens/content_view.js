@@ -1,6 +1,6 @@
 import React from 'react'
-import { View } from 'react-native'
-import { WebView } from 'react-native-webview'
+import { View, Text } from 'react-native'
+//import { WebView } from 'react-native-webview'
 
 //"https://jstest.authorize.net/v1/Accept.js"
 
@@ -15,7 +15,8 @@ console.log("inside content view!")
 
 const ContentView = () => (
     <View style={styles.container}>
-        <WebView source={{ uri: "https://google.com"}} />
+        {/* <WebView source={{ uri: "https://google.com"}} /> */}
+        <Text>WebView</Text>
     </View>
 )   
 
