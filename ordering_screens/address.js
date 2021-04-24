@@ -65,7 +65,7 @@ function GetAddress(props) {
                 <View>
                     <TextInput
                         label="Name"
-                        error={(errors.address1)? true : false }
+                        error={(touched.name && errors.name)? true : false }
                         onChangeText={handleChange('name')}
                         onBlur={handleBlur('name')}
                         value={values.name}
@@ -79,7 +79,7 @@ function GetAddress(props) {
                     />
                     <TextInput
                         label="Address 1"
-                        error={(errors.address1)? true : false }
+                        error={(touched.address1 && errors.address1)? true : false }
                         onChangeText={handleChange('address1')}
                         onBlur={handleBlur('address1')}
                         value={values.address1}
@@ -92,7 +92,7 @@ function GetAddress(props) {
                         value={values.address2}
                     />
                     <TextInput
-                        error={(errors.city)? true : false }
+                        error={(touched.city && errors.city)? true : false }
                         label="City"
                         onChangeText={handleChange('city')}
                         onBlur={handleBlur('city')}
@@ -100,6 +100,7 @@ function GetAddress(props) {
                     />
                     <Text style={styles.error_text}>{touched.city && errors.city}</Text>
                     <TextInput
+                        error={(touched.state && errors.state)? true : false }
                         label="State Code"
                         onChangeText={handleChange('state')}
                         onBlur={handleBlur('state')}
@@ -122,6 +123,7 @@ function GetAddress(props) {
                     />
                     <TextInput
                         label="Phone"
+                        error={(touched.phone && errors.phone)? true : false }
                         keyboardType = 'phone-pad'
                         onChangeText={handleChange('phone')}
                         onBlur={handleBlur('phone')}
