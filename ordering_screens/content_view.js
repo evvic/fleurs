@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigation } from '@react-navigation/native'; 
 import { View, Text } from 'react-native'
 import { WebView } from 'react-native-webview'
 
@@ -12,6 +13,7 @@ import { WebView } from 'react-native-webview'
 */
 
 const ContentView = (props) => { 
+    const navigation = useNavigation(); //navigation hook
 
     const js = `
         //ATTEMPT CREATING A DYNAMIC SCRIPT SRC
@@ -26,7 +28,7 @@ const ContentView = (props) => {
 
         //LOADS LIBRARY & WAITS TILL LOADED
         async function loadScript(source, charset) {
-            window.ReactNativeWebView.postMessage("loadScript()")
+            //window.ReactNativeWebView.postMessage("loadScript()")
             let script = document.createElement('script');
             script.setAttribute('src', source);
             if (charset) {
@@ -65,13 +67,13 @@ const ContentView = (props) => {
                 // Accept.js loads AcceptCore.js, so we have to wait for the
                 // "handshake" event that AcceptCore.js emits after loading.
                 let handshake = new Promise(resolve => {
-                    window.ReactNativeWebView.postMessage("inside promise")
+                    //window.ReactNativeWebView.postMessage("inside promise")
                     onHandshake = () => resolve();
                     document.body.addEventListener('handshake', onHandshake);
                 });
           
               // Wait for script load and handshake.
-              window.ReactNativeWebView.postMessage("waiting for response")
+              //window.ReactNativeWebView.postMessage("waiting for response")
               await Promise.all([loadScript('${props.authorizeData.AUTHORIZENET_URL}', 'utf-8'), handshake]);
             } finally {
                 if (onHandshake) {
@@ -83,7 +85,7 @@ const ContentView = (props) => {
         //CALLBACK FUNCTION
         function TokenResponse(response) {
 
-            //window.ReactNativeWebView.postMessage(JSON.stringify(response))
+            window.ReactNativeWebView.postMessage(JSON.stringify(response))
 
             if (response.messages.resultCode === "Error") {
                 var i = 0;
@@ -98,13 +100,12 @@ const ContentView = (props) => {
             }
             else {
                 let nonce = response.opaqueData.dataValue
-                window.ReactNativeWebView.postMessage("nonce: " + nonce)
+                //window.ReactNativeWebView.postMessage(nonce)
             }
         }
         
         async function getNonce() {
             await loadAcceptApi();
-            window.ReactNativeWebView.postMessage("library loaded")
 
             let authData = {
                 clientKey: "${props.authorizeData.AUTHORIZENET_KEY}",
@@ -112,10 +113,10 @@ const ContentView = (props) => {
             }
 
             let cardData = {
-                cardNumber: "4242424242424242",
-                month: "01",
-                year: "2022",
-                cardCode: "111"
+                cardNumber: "${props.cardInfo.cardNumber}",
+                month: "${props.cardInfo.month}",
+                year: "${props.cardInfo.year}",
+                cardCode: "${props.cardInfo.cardCode}"
             }
 
             //combine cardData & authData
@@ -124,7 +125,7 @@ const ContentView = (props) => {
                 cardData: cardData
             }
 
-            window.ReactNativeWebView.postMessage("at Accept.dispatch")
+            //window.ReactNativeWebView.postMessage("at Accept.dispatch")
             //setTimeout(() => {Accept.dispatchData(secureData, TokenResponse)}, 30000)
             Accept.dispatchData(secureData, TokenResponse)
         }
@@ -132,18 +133,38 @@ const ContentView = (props) => {
         //call getNonce which will async get call abck and make sure library is running
         getNonce()
     `
-    
+
+    console.log(props.cardInfo)
+
     return (
         /* WebView should be hidden. View style has opacity of 0*/
         /* making the dimensions (width & height) very small as well*/
-        <View style={{ height: 5, width: 50, overflow:'hidden', opacity:1 }}>
+        <View style={{ height: 5, width: 50, overflow:'hidden', opacity:0 }}>
             <WebView 
                 useWebKit={true} //iOS performance
                 javaScriptEnabled={true}
                 source={{ uri:"https://www.google.com/"}}
                 //onLoad={this._onLoadEnd.bind(this)}
                 onMessage={event => {
-                    console.log(event.nativeEvent.data);
+                    //returns response stringified object
+                    let response = JSON.parse(event.nativeEvent.data)
+
+                    props.setToken(event.nativeEvent.data)
+                    if (response.messages.resultCode === "Error") {
+                        var i = 0;
+                        while (i < response.messages.message.length) {
+                            //changed from console.log
+                            console.log(
+                                response.messages.message[i].code + ": " +
+                                response.messages.message[i].text
+                            );
+                            i = i + 1;
+                        }
+                    }
+                    else {
+                        let nonce = response.opaqueData.dataValue
+                        props.setToken(nonce)
+                    }
                 }}
                 //testing 
                 injectedJavaScript={js}

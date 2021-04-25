@@ -10,6 +10,7 @@ import GetZipCode from '../ordering_screens/get_zip_code.js'    // sets shipping
 import GetDeliveryAddy from '../ordering_screens/delivery_addy.js' // sets shipping address
 import GetBillingAddy from '../ordering_screens/billing_addy.js'// sets billing address
 import Payment from '../ordering_screens/payment.js'            // gets payment & returns token
+import PlaceOrder from '../ordering_screens/place_order.js'     // places orders with FLoristOne
 
 import { set } from 'react-native-reanimated';
 
@@ -21,7 +22,10 @@ function OrderScreen({ route, navigation }) {
     const [cartItems, setCartItems] = useState([])
     var [zipCode, setZipCode] = useState()
     let [selectedDay, setSelectedDay] = useState()
-    const [token, setToken] = useState()
+    const [token, setToken] = useState(null, () => {
+        console.log("inside callback")
+        if(token != null) navigation.navigate('Ordering', { screen: 'Place Order' })
+    })
     let [billingAddress, setBillingAddress] = useState({
         name: "",
         institution: "",
@@ -41,11 +45,6 @@ function OrderScreen({ route, navigation }) {
 
     }, [])
 
-    /*
-    In this one screen maybe have a component for each sttep of the payment 
-    process that toggles to the next when each is completed
-    */
-
     return (
         <Tab.Navigator>
             <Tab.Screen name="Delivery" options={{ headerShown: false }}>
@@ -64,13 +63,12 @@ function OrderScreen({ route, navigation }) {
                 {(props) => <Payment selectedDay={selectedDay} deliveryAddress={deliveryAddress}
                 billingAddress={billingAddress} setToken={setToken} token={token}/>}
             </Tab.Screen>
+            <Tab.Screen name="Place Order" options={{ headerShown: false }}>
+                {(props) => <PlaceOrder selectedDay={selectedDay} deliveryAddress={deliveryAddress}
+                billingAddress={billingAddress} token={token} product={product} {...props}/>}
+            </Tab.Screen>
         </Tab.Navigator>
     );
-
-    {/* <View>
-            <Text>Ordering Page {product.NAME}</Text> 
-            <GetZipCode setZipCode={setZipCode} zipCode={zipCode} setSelectedDay={setSelectedDay} selectedDay={selectedDay}/>
-         </View> */}
 }
 
 export default OrderScreen;
