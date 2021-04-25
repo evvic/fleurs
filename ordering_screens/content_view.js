@@ -32,7 +32,7 @@ const ContentView = (props) => {
             if (charset) {
               script.setAttribute('charset', charset);
             }
-          
+
             let onLoad = null;
             let onError = null;
             try {
@@ -52,14 +52,14 @@ const ContentView = (props) => {
               }
             }
         }
-        
+
         //FINISHES WHEN FUNCTIONS ARE LOADED
         async function loadAcceptApi() {
 
             if (typeof Accept != 'undefined') {
               return;
             }
-          
+
             let onHandshake = null;
             try {
                 // Accept.js loads AcceptCore.js, so we have to wait for the
@@ -132,7 +132,6 @@ const ContentView = (props) => {
         //call getNonce which will async get call abck and make sure library is running
         getNonce()
     `
-
     
     return (
         /* WebView should be hidden. View style has opacity of 0*/
@@ -157,28 +156,5 @@ const ContentView = (props) => {
 
     
 }
-
-async function loadAcceptApi() {
-    if (typeof Accept != 'undefined') {
-      return;
-    }
-  
-    let onHandshake = null;
-    try {
-      // Accept.js loads AcceptCore.js, so we have to wait for the
-      // "handshake" event that AcceptCore.js emits after loading.
-      let handshake = new Promise(resolve => {
-        onHandshake = () => resolve();
-        document.body.addEventListener('handshake', onHandshake);
-      });
-  
-      // Wait for script load and handshake.
-      await Promise.all([loadScript('https://jstest.authorize.net/v1/Accept.js', 'utf-8'), handshake]);
-    } finally {
-      if (onHandshake) {
-        document.body.removeEventListener('handshake', onHandshake);
-      }
-    }
-  }
 
 export default ContentView

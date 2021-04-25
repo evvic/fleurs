@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native'; 
-import { Text, View, Image, Button } from "react-native";
+import { Text, View, Image, Button, Switch } from "react-native";
 import { styles } from '../styles/global.js'; //CSS equivalent
 
 //npm i react-native-keyboard-aware-scroll-view --save
@@ -30,12 +30,14 @@ const ReviewSchema = yup.object({
     phone: yup.string().required().matches(phoneRegExp, "Phone number is not valid.")
 })
 
-function GetAddress(props) {
+function GetBillingAddy(props) {
     const navigation = useNavigation(); //navigation hook
+
+    const [sameAddress, setSameAddress] = useState(false)
 
     const AddAddress = (addy) => {
         // deliveryAddress will still appear empty in here but it was updated
-        props.setDeliveryAddress({
+        props.setBillingAddress({
             name: addy.name,
             institution: addy.institution,
             address1: addy.address1,
@@ -50,6 +52,7 @@ function GetAddress(props) {
 
     return (
         <KeyboardAwareScrollView>
+            <Text>Fill Billing Address</Text>
             <Formik
                 initialValues={{ name: '', institution: '', address1: '', address2: '',
                     city: '', state: '', zip: props.zipCode, country: 'US', phone: '' }}
@@ -57,7 +60,7 @@ function GetAddress(props) {
                     console.log("submitting address...")
                     AddAddress(values)
                     //when address is filled go to billing
-                    navigation.navigate('Ordering', { screen: 'Billing' })}
+                    navigation.navigate('Ordering', { screen: 'Payment' })}
                 }
                 validationSchema={ReviewSchema}
             >
@@ -72,56 +75,6 @@ function GetAddress(props) {
                     />
                     <Text style={styles.error_text}>{touched.name && errors.name}</Text>
                     <TextInput
-                        label="institution"
-                        onChangeText={handleChange('institution')}
-                        onBlur={handleBlur('institution')}
-                        value={values.institution}
-                    />
-                    <TextInput
-                        label="Address 1"
-                        error={(touched.address1 && errors.address1)? true : false }
-                        onChangeText={handleChange('address1')}
-                        onBlur={handleBlur('address1')}
-                        value={values.address1}
-                    />
-                    <Text style={styles.error_text}>{touched.address1 && errors.address1}</Text>
-                    <TextInput
-                        label="Address 2"
-                        onChangeText={handleChange('address2')}
-                        onBlur={handleBlur('address2')}
-                        value={values.address2}
-                    />
-                    <TextInput
-                        error={(touched.city && errors.city)? true : false }
-                        label="City"
-                        onChangeText={handleChange('city')}
-                        onBlur={handleBlur('city')}
-                        value={values.city}
-                    />
-                    <Text style={styles.error_text}>{touched.city && errors.city}</Text>
-                    <TextInput
-                        error={(touched.state && errors.state)? true : false }
-                        label="State Code"
-                        onChangeText={handleChange('state')}
-                        onBlur={handleBlur('state')}
-                        value={values.state}
-                    />
-                    <Text style={styles.error_text}>{touched.state && errors.state}</Text>
-                    <TextInput
-                        label="ZIP code"
-                        disabled={true}
-                        onChangeText={handleChange('zip')}
-                        onBlur={handleBlur('zip')}
-                        value={values.zip}
-                    />
-                    <TextInput
-                        label="Country"
-                        editable={false}
-                        onChangeText={handleChange('country')}
-                        onBlur={handleBlur('country')}
-                        value={values.country}
-                    />
-                    <TextInput
                         label="Phone"
                         error={(touched.phone && errors.phone)? true : false }
                         keyboardType = 'phone-pad'
@@ -130,6 +83,73 @@ function GetAddress(props) {
                         value={values.phone}
                     />
                     <Text style={styles.error_text}>{touched.phone && errors.phone}</Text>
+
+                    <Switch
+                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                        thumbColor={sameAddress ? "#f5dd4b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={() => setSameAddress(!sameAddress)}
+                        value={sameAddress}
+                    />
+
+                    <Text>Use the same address for delivery</Text>
+
+                    <TextInput
+                        label="institution"
+                        disabled={(sameAddress)? true : false}
+                        onChangeText={handleChange('institution')}
+                        onBlur={handleBlur('institution')}
+                        value={values.institution}
+                    />
+                    <TextInput
+                        label="Address 1"
+                        disabled={(sameAddress)? true : false}
+                        error={(touched.address1 && errors.address1)? true : false }
+                        onChangeText={handleChange('address1')}
+                        onBlur={handleBlur('address1')}
+                        value={(sameAddress)? values.address1 = props.deliveryAddress.address1 : values.address1}
+                    />
+                    <Text style={styles.error_text}>{touched.address1 && errors.address1}</Text>
+                    <TextInput
+                        label="Address 2"
+                        disabled={(sameAddress)? true : false}
+                        onChangeText={handleChange('address2')}
+                        onBlur={handleBlur('address2')}
+                        value={(sameAddress)? values.address2 = props.deliveryAddress.address2 : values.address2}
+                    />
+                    <TextInput
+                        error={(touched.city && errors.city)? true : false }
+                        label="City"
+                        disabled={(sameAddress)? true : false}
+                        onChangeText={handleChange('city')}
+                        onBlur={handleBlur('city')}
+                        value={(sameAddress)? values.city = props.deliveryAddress.city : values.city}
+                    />
+                    <Text style={styles.error_text}>{touched.city && errors.city}</Text>
+                    <TextInput
+                        error={(touched.state && errors.state)? true : false }
+                        label="State Code"
+                        disabled={(sameAddress)? true : false}
+                        onChangeText={handleChange('state')}
+                        onBlur={handleBlur('state')}
+                        value={(sameAddress)? values.state = props.deliveryAddress.state : values.state}
+                    />
+                    <Text style={styles.error_text}>{touched.state && errors.state}</Text>
+                    <TextInput
+                        label="ZIP code"
+                        disabled={(sameAddress)? true : false}
+                        onChangeText={handleChange('zip')}
+                        onBlur={handleBlur('zip')}
+                        value={(sameAddress)? values.zip = props.deliveryAddress.zip : values.zip}
+                    />
+                    <TextInput
+                        label="Country"
+                        editable={false}
+                        onChangeText={handleChange('country')}
+                        onBlur={handleBlur('country')}
+                        value={values.country}
+                    />
+                    
                     <Button onPress={handleSubmit} title="Submit" />
                 </View>
                 )}
@@ -138,4 +158,4 @@ function GetAddress(props) {
     );
 }
 
-export default GetAddress;
+export default GetBillingAddy;

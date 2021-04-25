@@ -5,23 +5,14 @@ import axios from 'axios';
 import moment from 'moment'
 import ContentView from './content_view.js'
 
-//npm install react-native-authorize-net --legacy-peer-deps             //uninstalled
-//npm install react-native-reliantid-authorize-net --legacy-peer-deps   //uninstalled
-
 //npm i react-native-keyboard-aware-scroll-view --save
 //^ important to make forms easier to fill
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-//npm i --save react-native-credit-card-input
-//import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input"; //uninstalled
-// Note: You'll need to enable LayoutAnimation on android to see LiteCreditCardInput's animations
-//UIManager.setLayoutAnimationEnabledExperimental(true)
-
 //npm install react-native-paper
 import { TextInput } from 'react-native-paper';
 
-
-function GetBilling(props) {
+function Payment(props) {
     const [loading, setLoading] = useState(true)
     const [authorizeData, setAuthorizeData] = useState({})
 
@@ -30,7 +21,7 @@ function GetBilling(props) {
 
         setLoading(true) //when project mounts, start loading process
 
-        CreateToken()    //when token is created, loading is done
+        LoadAuthData()    //when token is created, loading is done
    
         //anything returned happens when component is unmounted
         return () => {
@@ -39,15 +30,11 @@ function GetBilling(props) {
         };
     }, [])
 
-    async function CreateToken() {
+    async function LoadAuthData() {
         let keyObj = await GetKey()
+
         console.log('keyObj', keyObj)
         setAuthorizeData(keyObj)
-
-        //onsole.log('Accept URL', keyObj.AUTHORIZENET_URL)
-        //const ACCEPTJS = require(keyObj.AUTHORIZENET_URL)
-        //const ACCEPTJS = await import(keyObj.AUTHORIZENET_URL)
-        //const Accept = import('authorizenet')
 
         let authData = await {
             clientKey: keyObj.AUTHORIZENET_KEY,
@@ -55,39 +42,14 @@ function GetBilling(props) {
         }
         //console.log('authData', authData)
 
-        //are all strings
-        let cardData = await {
-            cardNumber: "4242424242424242",
-            month: "01",
-            year: "2022",
-            cardCode: "111"
-        }
-        //console.log('cardData', cardData)
-
-        let secureData = await {
-            authData: authData,
-            cardData: cardData
-        }
-        //console.log('secureData', secureData)
-
-        let keys = await {
-            LOGIN_ID: keyObj.USERNAME,
-            CLIENT_KEY: keyObj.AUTHORIZENET_KEY,
-            CARD_NO: "4242424242424242",
-            EXPIRATION_MONTH: "01",
-            EXPIRATION_YEAR: "2022",
-            CVV_NO: "111"
-        }
-
         setLoading(false)
 
-        //Accept.dispatchData(secureData, TokenResponse)
     }
 
     return (
         <View>
-            {/* <Text>IN BILLING</Text>
-            <Text>{props.deliveryAddress.name}</Text> */}
+            <Text>IN BILLING</Text>
+            <Text>{props.deliveryAddress.name}</Text>
             
             {(loading)?
                 <Text>Loading...</Text>
@@ -154,4 +116,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default GetBilling;
+export default Payment;

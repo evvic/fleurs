@@ -5,10 +5,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
 import { username, password, auth } from './../API_KEY.js'
 
-//ordering compnents
-import GetZipCode from '../ordering_screens/get_zip_code.js'
-import GetAddress from '../ordering_screens/address.js'
-import GetBilling from '../ordering_screens/billing.js'
+//ordering components
+import GetZipCode from '../ordering_screens/get_zip_code.js'    // sets shipping zip code & delivery day
+import GetDeliveryAddy from '../ordering_screens/delivery_addy.js' // sets shipping address
+import GetBillingAddy from '../ordering_screens/billing_addy.js'// sets billing address
+import Payment from '../ordering_screens/payment.js'            // gets payment & returns token
+
+import { set } from 'react-native-reanimated';
 
 const Tab = createStackNavigator();
 
@@ -18,6 +21,7 @@ function OrderScreen({ route, navigation }) {
     const [cartItems, setCartItems] = useState([])
     var [zipCode, setZipCode] = useState()
     let [selectedDay, setSelectedDay] = useState()
+    const [token, setToken] = useState()
     let [billingAddress, setBillingAddress] = useState({
         name: "",
         institution: "",
@@ -48,17 +52,19 @@ function OrderScreen({ route, navigation }) {
                 {(props) => <GetZipCode setZipCode={setZipCode} zipCode={zipCode}
                     setSelectedDay={setSelectedDay} selectedDay={selectedDay}/>}
             </Tab.Screen>
-            <Tab.Screen name="Address" options={{ headerShown: false }}>
-                {(props) => <GetAddress zipCode={zipCode} selectedDay={selectedDay}
+            <Tab.Screen name="Delivery Address" options={{ headerShown: false }}>
+                {(props) => <GetDeliveryAddy zipCode={zipCode} selectedDay={selectedDay}
                     setDeliveryAddress={setDeliveryAddress} deliveryAddress={deliveryAddress}/>}
             </Tab.Screen>
-            <Tab.Screen name="Billing" options={{ headerShown: false }}>
-                {(props) => <GetBilling selectedDay={selectedDay} deliveryAddress={deliveryAddress}
+            <Tab.Screen name="Billing Address" options={{ headerShown: false }}>
+                {(props) => <GetBillingAddy selectedDay={selectedDay} deliveryAddress={deliveryAddress}
                 setBillingAddress={setBillingAddress} billingAddress={billingAddress}/>}
             </Tab.Screen>
-
+            <Tab.Screen name="Payment" options={{ headerShown: false }}>
+                {(props) => <Payment selectedDay={selectedDay} deliveryAddress={deliveryAddress}
+                billingAddress={billingAddress} setToken={setToken} token={token}/>}
+            </Tab.Screen>
         </Tab.Navigator>
-        
     );
 
     {/* <View>

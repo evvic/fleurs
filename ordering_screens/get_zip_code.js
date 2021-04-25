@@ -89,7 +89,7 @@ function GetZipCode(props) {
                     <Button
                         title="Deliver"
                         //because this is a nested navigator, it's a bit complicated...
-                        onPress={() => navigation.navigate('Ordering', { screen: 'Address' })}
+                        onPress={() => navigation.navigate('Ordering', { screen: 'Delivery Address' })}
                     />
                 </>
                 :
