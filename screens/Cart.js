@@ -27,15 +27,6 @@ function CartScreen({ route, navigation }) {
             <Text>Cart</Text>
             <Text>itemId: {JSON.stringify(itemId)}</Text>
             <Text>otherParam: {JSON.stringify(CartID)}</Text>
-            <Button
-            title="Go to Cart"
-            onPress={() => navigation.push('Cart', {
-                itemId: 69,
-                otherParam: 'how to pass data to another screen',
-            })}
-            //navigation.push creates a new page (can make duplicates)
-            //navigation.navigate goes to the page
-            />
             <FlatList 
                 //style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', flexGrow: 0}}
                 data={cartItems}
@@ -44,11 +35,9 @@ function CartScreen({ route, navigation }) {
       
       </View>
     );
-    /*CODE: "D5-4894"
-    NAME: "The Happy Blooms Basket"
-    PRICE: 69.95
-    */
 }
+//navigation.push creates a new page (can make duplicates)
+//navigation.navigate goes to the page
 
 //takes the session_ID and returns an object/array of all itemsin the cart
 async function GetCart(sessionid) {

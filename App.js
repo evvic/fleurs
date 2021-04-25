@@ -9,9 +9,10 @@ import HomeScreen from './screens/Home.js'
 import CartScreen from './screens/Cart.js'
 import Feedback from './screens/Feedback.js'
 import { username, password, auth } from './API_KEY.js' //base64 encoded API key
+import OrderScreen from './screens/Ordering.js';
 
-//https://github.com/stephy/CalendarPicker
-// ^ use this for calnedar later?
+//https://github.com/sbycrosz/react-native-credit-card-input
+// ^ use this for cc info?
 
 const Stack = createStackNavigator();
 
@@ -92,6 +93,7 @@ export default function App() {
             initialParams={{itemId: 0, CartID: sessionID, name: "User"}}
             options={({ route }) => ({ title: `${route.params.name}'s Basket`})}/>
          <Stack.Screen name="Feedback" component={Feedback}/>
+         <Stack.Screen name="Ordering" component={OrderScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
   );

@@ -10,10 +10,6 @@ import axios from 'axios';
 import { Picker } from '@react-native-picker/picker'; //npm install @react-native-picker/picker --save
 import { FlatList } from 'react-native-gesture-handler';
 
-//https://reactnativeexample.com/a-simple-and-customizable-react-native-dropdown-created-using-react-native-modal/
-//doesn't seem to work on web
-import { Dropdown} from 'sharingan-rn-modal-dropdown'
-
 import { data } from '../data.js'
 
 // the navigation prop is passed in to every screen component
@@ -82,6 +78,7 @@ function HomeScreen({ navigation, route }) {
         temp = await CreateCart()
         setCartId(temp)
 
+        
         temp = await returnCategories()
         setCategories(temp)
 
@@ -155,18 +152,18 @@ async function Intro() {
 }
 
 const styles = StyleSheet.create({
-  dropdown_container: {
-    paddingTop: 30,
-    marginLeft: 20,
-    marginRight: 20,
-    flex: 1,
-  },
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+    dropdown_container: {
+        paddingTop: 30,
+        marginLeft: 20,
+        marginRight: 20,
+        flex: 1,
     },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        },
   });
 
 export default HomeScreen;
