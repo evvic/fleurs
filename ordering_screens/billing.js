@@ -22,23 +22,29 @@ import { TextInput } from 'react-native-paper';
 
 
 function GetBilling(props) {
+    const [loading, setLoading] = useState(true)
+    const [authorizeData, setAuthorizeData] = useState({})
 
     React.useEffect(() => {
         // this is called when the component is mounted
 
-        CreateToken()
+        setLoading(true) //when project mounts, start loading process
+
+        CreateToken()    //when token is created, loading is done
    
         //anything returned happens when component is unmounted
         return () => {
             console.log("product unmounted")
+            
         };
     }, [])
 
     async function CreateToken() {
         let keyObj = await GetKey()
         console.log('keyObj', keyObj)
+        setAuthorizeData(keyObj)
 
-        console.log('Accept URL', keyObj.AUTHORIZENET_URL)
+        //onsole.log('Accept URL', keyObj.AUTHORIZENET_URL)
         //const ACCEPTJS = require(keyObj.AUTHORIZENET_URL)
         //const ACCEPTJS = await import(keyObj.AUTHORIZENET_URL)
         //const Accept = import('authorizenet')
@@ -47,7 +53,7 @@ function GetBilling(props) {
             clientKey: keyObj.AUTHORIZENET_KEY,
             apiLoginID: keyObj.USERNAME
         }
-        console.log('authData', authData)
+        //console.log('authData', authData)
 
         //are all strings
         let cardData = await {
@@ -56,13 +62,13 @@ function GetBilling(props) {
             year: "2022",
             cardCode: "111"
         }
-        console.log('cardData', cardData)
+        //console.log('cardData', cardData)
 
         let secureData = await {
             authData: authData,
             cardData: cardData
         }
-        console.log('secureData', secureData)
+        //console.log('secureData', secureData)
 
         let keys = await {
             LOGIN_ID: keyObj.USERNAME,
@@ -73,6 +79,8 @@ function GetBilling(props) {
             CVV_NO: "111"
         }
 
+        setLoading(false)
+
         //Accept.dispatchData(secureData, TokenResponse)
     }
 
@@ -80,8 +88,12 @@ function GetBilling(props) {
         <View>
             {/* <Text>IN BILLING</Text>
             <Text>{props.deliveryAddress.name}</Text> */}
-            <ContentView />
             
+            {(loading)?
+                <Text>Loading...</Text>
+            :
+                <ContentView test={7} authorizeData={authorizeData} {...props}/>
+            }
         </View>
     );
 }
