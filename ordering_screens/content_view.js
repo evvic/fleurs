@@ -159,6 +159,7 @@ const ContentView = (props) => {
                                 response.messages.message[i].text
                             );
                             i = i + 1;
+                            alert("erorr: " + response.messages.message[i].text)
                         }
                     }
                     else {
