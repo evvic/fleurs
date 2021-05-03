@@ -18,9 +18,10 @@ function HomeScreen({ navigation, route }) {
     const { updateCart } = route.params; //lift-up state
     const [cartID, setCartId] = React.useState()
     let [welcome, setWelcome] = React.useState("null")
-    const [category, setCategory] = React.useState("bd");
-    const [categories, setCategories] = React.useState([])
-    const [listCategories, setListCategories] = React.useState([<Picker.Item label="temp" value="temp" />])
+    const [category, setCategory] = React.useState("all");
+    const [sorttype, setSorttype] = React.useState(null)
+    //const [categories, setCategories] = React.useState([])
+    //const [listCategories, setListCategories] = React.useState([<Picker.Item label="temp" value="temp" />])
     const [loaded, setLoaded] = React.useState(false)
 
     /* const onChangeSS = (value) => {
@@ -83,15 +84,15 @@ function HomeScreen({ navigation, route }) {
         temp = await CreateCart()
         setCartId(temp)
 
-        
-        temp = await returnCategories()
-        setCategories(temp)
+        //categories will be preset
+        /* temp = await returnCategories()
+        setCategories(temp) */
 
-        console.log("teehee" + categories)
+        //console.log("teehee" + categories)
 
-        setListCategories(temp.map(item => {
+        /* setListCategories(temp.map(item => {
             <Picker.Item label={item.DISPLAY} value={item.CATEGORY} />
-        }))
+        })) */
         setLoaded(true)
         }
 
@@ -103,29 +104,43 @@ function HomeScreen({ navigation, route }) {
                 onPress={() => navigation.navigate('Feedback')}
             />
             {(loaded)? 
-            <Picker
-              style={styles.dropdown_container}
-              selectedValue={category}
-              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)
-              }>
-                <Picker.Item label={"Birthday"} value={"bd"} />
-                <Picker.Item label={"Anniversary"} value={"an"} />
-                <Picker.Item label={"Everyday"} value={"ao"} />
-                <Picker.Item label={"Thank You"} value={"ty"} />
-                <Picker.Item label={"Love & Romance"} value={"lr"} />
-                <Picker.Item label={"Get Well"} value={"gw"} />
-                <Picker.Item label={"New Baby"} value={"nb"} />
-                <Picker.Item label={"Centerpieces"} value={"c"} />
-                <Picker.Item label={"Fruit Baskets"} value={"x"} />
-                <Picker.Item label={"Flowers Under $60"} value={"u61"} />
-            </Picker>
+            <>
+              <Picker
+                style={styles.dropdown_container}
+                selectedValue={category}
+                onValueChange={(itemValue, itemIndex) => setCategory(itemValue)
+                }>
+                  <Picker.Item label={"All"} value={"all"} />
+                  <Picker.Item label={"Birthday"} value={"bd"} />
+                  <Picker.Item label={"Anniversary"} value={"an"} />
+                  <Picker.Item label={"Everyday"} value={"ao"} />
+                  <Picker.Item label={"Thank You"} value={"ty"} />
+                  <Picker.Item label={"Love & Romance"} value={"lr"} />
+                  <Picker.Item label={"Get Well"} value={"gw"} />
+                  <Picker.Item label={"New Baby"} value={"nb"} />
+                  <Picker.Item label={"Centerpieces"} value={"c"} />
+                  <Picker.Item label={"Fruit Baskets"} value={"x"} />
+                  <Picker.Item label={"Flowers Under $60"} value={"u61"} />
+              </Picker>
+              <Picker
+                style={styles.dropdown_container}
+                selectedValue={sorttype}
+                onValueChange={(itemValue, itemIndex) => setSorttype(itemValue)
+                }>
+                  <Picker.Item label={"None"} value={null} />
+                  <Picker.Item label={"Price Ascending"} value={"pa"} />
+                  <Picker.Item label={"Price Descending"} value={"pd"} />
+                  <Picker.Item label={"Alphabetical (a-z)"} value={"az"} />
+                  <Picker.Item label={"Alphabetical (z-a)"} value={"za"} />
+              </Picker>
+            </>
             :
             <Text>loading...</Text>}
             
             
             <Text>{welcome}</Text>
             {(category)?
-            <Products category={category} sessionid={cartID}/>
+            <Products category={category} sorttype={sorttype} sessionid={cartID}/>
             :
             <Text>select category</Text>
             }

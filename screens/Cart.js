@@ -19,7 +19,7 @@ function CartScreen({ route, navigation }) {
 
     async function UpdateCart() {
         let temp = await GetCart(CartID, setError)
-        console.log(temp)
+        if(temp == null) console.log("was an error in GetCart")
         setCartItems(temp)
     }
 
@@ -35,7 +35,13 @@ function CartScreen({ route, navigation }) {
                     renderItem={({item}) => <CartItem code={item.CODE} />}
                 />
             :
-                <Text>Error retrieving products: {error}</Text>
+                <>
+                    <Text>Error retrieving cart: {error}</Text>
+                    <Button
+                        onPress={UpdateCart()}
+                        title="Retry"
+                    />
+                </>
             }
             
       
@@ -61,15 +67,13 @@ async function GetCart(sessionid, setError) {
     if("errors" in obj) {
         console.log("ERROR CAUGHT")
         setError(obj.errors)
-        return {NAME: "error", DESCRIPTION: obj.errors}
+        return null
     }
     else {
         console.log(obj.products)
         setError(null)
         return obj.products
     }
-
-    
     
 }
 

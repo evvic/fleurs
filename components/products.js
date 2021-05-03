@@ -15,9 +15,14 @@ function Products(props) {
         /* JSON PRODUCT OPTIONS */
         //console.log("products category: " + props.category)
         let category = props.category
-        let count = 50
+        let count = (category == "any")? 200 : 50
         let start = 1
-        let url = `https://www.floristone.com/api/rest/flowershop/getproducts?category=${category}&count=${count}&start${start}`
+        let url = `https://www.floristone.com/api/rest/flowershop/getproducts?category=${category}&count=${count}&start=${start}`
+
+        if(props.sorttype != null) {
+            let sorttype = props.sorttype
+            url = url + `&sorttype=${sorttype}`
+        }
 
         const options = {
             headers: {
@@ -30,7 +35,6 @@ function Products(props) {
         if("errors" in obj) {
             console.log("ERROR CAUGHT")
             setError(obj.errors)
-            props.setToastError(obj.errors)
             
             return {NAME: "error", DESCRIPTION: obj.errors}
 

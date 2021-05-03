@@ -30,7 +30,7 @@ function GetZipCode(props) {
         
         if(props.zipCode && props.zipCode.toString().length == 5) {
             console.log("zip code has 5 nums")
-    
+            props.setSelectedDay(null)
             FormatAvailableDates(props.zipCode)
         }
 
@@ -94,7 +94,7 @@ function GetZipCode(props) {
                 </>
                 :
                 <>
-                    <Text>Selected a delivery day. Bruv</Text>
+                    <Text>Select a delivery day.</Text>
                 </>
                 }
     

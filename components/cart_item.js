@@ -16,20 +16,12 @@ function CartItem(props) {
     const navigation = useNavigation(); //navigation hook
     let [loaded, setLoaded] = useState(false)
     let [product, setProduct] = useState({})
-
+    let [error, setError] = useState(null)      //error fetching
 
     React.useEffect(() => {
         // this is called when the component is mounted
 
         GetProduct()
-        
-
-        async () => {
-            const data = await api.get(url) 
-            const obj = await data.data
-            console.log("~~~~~object lololol~~~~~~")
-            console.log(obj)
-        }
 
         //anything returned happens when component is unmounted
         return () => {
@@ -43,42 +35,57 @@ function CartItem(props) {
         const data = await api.get(url)
         const obj = await data.data
 
-        console.log(obj.PRODUCTS[0])
-        setLoaded(true)
-        let temp = await obj.PRODUCTS[0]
-        setProduct(temp)
-        return obj.PRODUCTS[0]
+        //error handling
+        if("errors" in obj) {
+            setError(obj.errors)
+            return {NAME: "error", DESCRIPTION: obj.errors}
+        } 
+        else {
+            setError(null)
+            console.log(obj.PRODUCTS[0])
+            setLoaded(true)
+            let temp = await obj.PRODUCTS[0]
+            setProduct(temp)
+            return obj.PRODUCTS[0]
+        }
+
+        
     }
 
     let Image_Http_URL ={ uri: product.LARGE};
     //console.log(props.obj)
 
     return (
-        <View style={styles.container}>
-            <Text>{props.code}</Text>
-            {(loaded)?
-            <View className="flower-pot" style={styles.flower_pot}>
-                <View className="flower-icon">
-                    <Image source={Image_Http_URL}
-                        //image NEEDS width and height style
-                        style={{width:400, height:400}}  
+        (!error)? 
+            <View style={styles.container}>
+                <Text>{props.code}</Text>
+                {(loaded)?
+                <View className="flower-pot" style={styles.flower_pot}>
+                    <View className="flower-icon">
+                        <Image source={Image_Http_URL}
+                            //image NEEDS width and height style
+                            style={{width:400, height:400}}  
+                        />
+                    </View>
+                    <Text>{product.NAME}</Text>
+                    <Text>${product.PRICE}</Text>
+                    <Text>{product.DESCRIPTION}</Text>
+                    <Button
+                        title="Place order"
+                        onPress={() => navigation.navigate('Ordering', {
+                            product: product
+                        })}
                     />
                 </View>
-                <Text>{product.NAME}</Text>
-                <Text>${product.PRICE}</Text>
-                <Text>{product.DESCRIPTION}</Text>
-                <Button
-                    title="Place order"
-                    onPress={() => navigation.navigate('Ordering', {
-                        product: product
-                    })}
-                />
+                :
+                <Text>Loading...</Text>
+                }
+                
             </View>
-            :
-            <Text>Loading...</Text>
-            }
-            
-        </View>
+        :
+            <>
+                <Text>Error</Text>
+            </>
     );
 }
 

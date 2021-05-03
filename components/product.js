@@ -75,6 +75,15 @@ async function AddItemToCart(product_code, cart_id) {
     const data = await api.put(`/shoppingcart?sessionid=${cart_id}&action=add&productcode=${product_code}`) 
     const obj = await data.data
 
+    if("errors" in obj) {
+        //setTimeout(() => {}, 2000)
+        //TOAST OR SOME POP-UP NOTIFYING IT COULD NOT ADD ITEM TO CART
+        console.log("Error: could not add item to cart")
+    }
+    else {
+        console.log("successfully added item to cart")
+    }
+
     console.log(obj)
 
 }
