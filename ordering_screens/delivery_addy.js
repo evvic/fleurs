@@ -32,7 +32,6 @@ const ReviewSchema = yup.object({
 
 function GetDeliveryAddy(props) {
     const navigation = useNavigation(); //navigation hook
-    const phoneInput = useRef<PhoneInput>(null);
 
     const AddAddress = (addy) => {
         // deliveryAddress will still appear empty in here but it was updated

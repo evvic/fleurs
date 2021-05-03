@@ -90,5 +90,15 @@ export const styles = StyleSheet.create ({
         borderColor: "#cccccc",
         borderBottomWidth: 1,
         marginBottom: 20
+    },
+
+    //billing address
+    toggle: {
+        paddingBottom: 10
+    },
+    toggleText: {
+        paddingTop: 4,
+        paddingLeft: 5,
     }
+
 });
