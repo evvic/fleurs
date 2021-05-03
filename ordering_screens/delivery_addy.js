@@ -15,7 +15,6 @@ import * as yup from 'yup'
 
 //npm install react-native-paper
 import { TextInput } from 'react-native-paper';
-import PhoneInput from 'react-native-phone-input'
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -33,6 +32,7 @@ const ReviewSchema = yup.object({
 
 function GetDeliveryAddy(props) {
     const navigation = useNavigation(); //navigation hook
+    const phoneInput = useRef<PhoneInput>(null);
 
     const AddAddress = (addy) => {
         // deliveryAddress will still appear empty in here but it was updated
@@ -51,7 +51,6 @@ function GetDeliveryAddy(props) {
 
     return (
         <KeyboardAwareScrollView>
-            <Text>Fill Delivery Address</Text>
             <Formik
                 initialValues={{ name: '', institution: '', address1: '', address2: '',
                     city: '', state: '', zip: props.zipCode, country: 'US', phone: '' }}
@@ -66,30 +65,33 @@ function GetDeliveryAddy(props) {
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                 <View style={styles.card}>
                     <View style={styles.cardContent}>
-                        <TextInput
-                            label="Recipient's name"
-                            error={(touched.name && errors.name)? true : false }
-                            onChangeText={handleChange('name')}
-                            onBlur={handleBlur('name')}
-                            value={values.name}
-                        />
-                        <Text style={styles.error_text}>{touched.name && errors.name}</Text>
-                        <TextInput
-                            label="Recipient's phone"
-                            error={(touched.phone && errors.phone)? true : false }
-                            keyboardType = 'phone-pad'
-                            onChangeText={handleChange('phone')}
-                            onBlur={handleBlur('phone')}
-                            value={values.phone}
-                        />
-                        <Text style={styles.error_text}>{touched.phone && errors.phone}</Text>
-                        
+                        <Text style={styles.header_text}>Delivery Address</Text>
+                        <View style={styles.nameAndPhone}>
+                            <TextInput
+                                label="Recipient's name"
+                                error={(touched.name && errors.name)? true : false }
+                                onChangeText={handleChange('name')}
+                                onBlur={handleBlur('name')}
+                                value={values.name}
+                            />
+                            <Text style={styles.error_text}>{touched.name && errors.name}</Text>
+                            <TextInput
+                                label="Recipient's phone"
+                                error={(touched.phone && errors.phone)? true : false }
+                                keyboardType = 'phone-pad'
+                                onChangeText={handleChange('phone')}
+                                onBlur={handleBlur('phone')}
+                                value={values.phone}
+                            />
+                            <Text style={styles.error_text}>{touched.phone && errors.phone}</Text>
+                        </View>
                         <TextInput
                             label="Institution"
                             onChangeText={handleChange('institution')}
                             onBlur={handleBlur('institution')}
                             value={values.institution}
                         />
+                        <Text style={styles.subtle_text}>Example: Evergreen Memorial</Text>
                         <TextInput
                             label="Address 1"
                             error={(touched.address1 && errors.address1)? true : false }
@@ -99,11 +101,12 @@ function GetDeliveryAddy(props) {
                         />
                         <Text style={styles.error_text}>{touched.address1 && errors.address1}</Text>
                         <TextInput
-                            label="Address 2"
+                            label="Apartment, suite, etc."
                             onChangeText={handleChange('address2')}
                             onBlur={handleBlur('address2')}
                             value={values.address2}
                         />
+                        <Text style={styles.subtle_text}>Example: 3rd floor</Text>
                         <TextInput
                             error={(touched.city && errors.city)? true : false }
                             label="City"

@@ -24,8 +24,14 @@ export const styles = StyleSheet.create ({
     error_text: {
         color: 'crimson',
         fontWeight: 'bold',
-        marginBottom: 5,
-        textAlign: 'center'
+        marginBottom: 10,
+        //textAlign: 'center'
+    },
+    subtle_text: {
+        marginBottom: 10,
+        fontStyle: 'italic',
+        color: 'grey'
+        //textAlign: 'center'
     },
     header_text: {
         textAlign: 'center',
@@ -79,4 +85,10 @@ export const styles = StyleSheet.create ({
         //borderBottomWidth: 1,
         marginBottom: 10
     },
+
+    nameAndPhone: {
+        borderColor: "#cccccc",
+        borderBottomWidth: 1,
+        marginBottom: 20
+    }
 });
