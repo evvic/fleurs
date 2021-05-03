@@ -15,6 +15,7 @@ import * as yup from 'yup'
 
 //npm install react-native-paper
 import { TextInput } from 'react-native-paper';
+import PhoneInput from 'react-native-phone-input'
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -63,75 +64,86 @@ function GetDeliveryAddy(props) {
                 validationSchema={ReviewSchema}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-                <View>
-                    <TextInput
-                        label="Recipient's name"
-                        error={(touched.name && errors.name)? true : false }
-                        onChangeText={handleChange('name')}
-                        onBlur={handleBlur('name')}
-                        value={values.name}
-                    />
-                    <Text style={styles.error_text}>{touched.name && errors.name}</Text>
-                    <TextInput
-                        label="Recipient's phone"
-                        error={(touched.phone && errors.phone)? true : false }
-                        keyboardType = 'phone-pad'
-                        onChangeText={handleChange('phone')}
-                        onBlur={handleBlur('phone')}
-                        value={values.phone}
-                    />
-                    <Text style={styles.error_text}>{touched.phone && errors.phone}</Text>
-                    <TextInput
-                        label="institution"
-                        onChangeText={handleChange('institution')}
-                        onBlur={handleBlur('institution')}
-                        value={values.institution}
-                    />
-                    <TextInput
-                        label="Address 1"
-                        error={(touched.address1 && errors.address1)? true : false }
-                        onChangeText={handleChange('address1')}
-                        onBlur={handleBlur('address1')}
-                        value={values.address1}
-                    />
-                    <Text style={styles.error_text}>{touched.address1 && errors.address1}</Text>
-                    <TextInput
-                        label="Address 2"
-                        onChangeText={handleChange('address2')}
-                        onBlur={handleBlur('address2')}
-                        value={values.address2}
-                    />
-                    <TextInput
-                        error={(touched.city && errors.city)? true : false }
-                        label="City"
-                        onChangeText={handleChange('city')}
-                        onBlur={handleBlur('city')}
-                        value={values.city}
-                    />
-                    <Text style={styles.error_text}>{touched.city && errors.city}</Text>
-                    <TextInput
-                        error={(touched.state && errors.state)? true : false }
-                        label="State Code"
-                        onChangeText={handleChange('state')}
-                        onBlur={handleBlur('state')}
-                        value={values.state}
-                    />
-                    <Text style={styles.error_text}>{touched.state && errors.state}</Text>
-                    <TextInput
-                        label="ZIP code"
-                        editable={false}
-                        onChangeText={handleChange('zip')}
-                        onBlur={handleBlur('zip')}
-                        value={values.zip}
-                    />
-                    <TextInput
-                        label="Country"
-                        editable={false}
-                        onChangeText={handleChange('country')}
-                        onBlur={handleBlur('country')}
-                        value={values.country}
-                    />
-                    <Button onPress={handleSubmit} title="Submit" />
+                <View style={styles.card}>
+                    <View style={styles.cardContent}>
+                        <TextInput
+                            label="Recipient's name"
+                            error={(touched.name && errors.name)? true : false }
+                            onChangeText={handleChange('name')}
+                            onBlur={handleBlur('name')}
+                            value={values.name}
+                        />
+                        <Text style={styles.error_text}>{touched.name && errors.name}</Text>
+                        <TextInput
+                            label="Recipient's phone"
+                            error={(touched.phone && errors.phone)? true : false }
+                            keyboardType = 'phone-pad'
+                            onChangeText={handleChange('phone')}
+                            onBlur={handleBlur('phone')}
+                            value={values.phone}
+                        />
+                        <Text style={styles.error_text}>{touched.phone && errors.phone}</Text>
+                        
+                        <TextInput
+                            label="Institution"
+                            onChangeText={handleChange('institution')}
+                            onBlur={handleBlur('institution')}
+                            value={values.institution}
+                        />
+                        <TextInput
+                            label="Address 1"
+                            error={(touched.address1 && errors.address1)? true : false }
+                            onChangeText={handleChange('address1')}
+                            onBlur={handleBlur('address1')}
+                            value={values.address1}
+                        />
+                        <Text style={styles.error_text}>{touched.address1 && errors.address1}</Text>
+                        <TextInput
+                            label="Address 2"
+                            onChangeText={handleChange('address2')}
+                            onBlur={handleBlur('address2')}
+                            value={values.address2}
+                        />
+                        <TextInput
+                            error={(touched.city && errors.city)? true : false }
+                            label="City"
+                            onChangeText={handleChange('city')}
+                            onBlur={handleBlur('city')}
+                            value={values.city}
+                        />
+                        <Text style={styles.error_text}>{touched.city && errors.city}</Text>
+                        <View style={styles.row}>
+                            <View style={styles.inputWrap} >
+                                <TextInput
+                                    error={(touched.state && errors.state)? true : false }
+                                    label="State Code"
+                                    onChangeText={handleChange('state')}
+                                    onBlur={handleBlur('state')}
+                                    value={values.state.toUpperCase().slice(0, 2)}
+                                />
+                                <Text style={styles.error_text}>{touched.state && errors.state}</Text>
+                            </View>
+                            <View style={styles.inputWrap} >
+                                <TextInput
+                                    label="ZIP code"
+                                    editable={false}
+                                    onChangeText={handleChange('zip')}
+                                    onBlur={handleBlur('zip')}
+                                    value={values.zip}
+                                />
+                            </View>
+                            <View style={styles.inputWrap} >
+                                <TextInput
+                                    label="Country"
+                                    editable={false}
+                                    onChangeText={handleChange('country')}
+                                    onBlur={handleBlur('country')}
+                                    value={values.country}
+                                />
+                            </View>
+                        </View>
+                        <Button onPress={handleSubmit} title="Submit" />
+                    </View>
                 </View>
                 )}
             </Formik>

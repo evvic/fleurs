@@ -5,6 +5,9 @@ import { Text, View, FlatList, Button} from "react-native";
 import { username, password, auth } from '../API_KEY.js'
 import Product from "./product.js";
 
+//card cmponent
+//https://github.com/WrathChaos/react-native-header-view
+
 function Products(props) {
     let [flowers, setFlowers] = useState([])    //array of flowers
     let [total, setTotal] = useState(0)         //number of flowers

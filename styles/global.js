@@ -26,5 +26,57 @@ export const styles = StyleSheet.create ({
         fontWeight: 'bold',
         marginBottom: 5,
         textAlign: 'center'
-    }
+    },
+    header_text: {
+        textAlign: 'center',
+        fontSize: 20,
+        paddingBottom: 6,
+    },
+    subHeaderText: {
+        paddingVertical: 5,
+        //fontWeight: 'bold',
+        fontSize: 16,
+        
+    },
+
+    //ZIP code custom card container
+    card: {
+        borderRadius: 6,
+        elevation: 3,
+        backgroundColor: '#fff',
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: '#333',
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        marginHorizontal: 6,
+        marginVertical: 6,
+    },
+    cardContent: {
+        marginHorizontal: 18,
+        marginVertical: 10,
+        
+    },
+    cardCalendarContent: {
+        marginVertical: 10,
+    },
+    cardCenteredContent: {
+        marginHorizontal: 18,
+        marginVertical: 10,
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    //address form styling
+    row: {
+        flex: 1,
+        flexDirection: "row"
+    },
+    inputWrap: {
+        flex: 1,
+        padding: 3,
+        //borderColor: "#cccccc",
+        //borderBottomWidth: 1,
+        marginBottom: 10
+    },
 });

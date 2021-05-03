@@ -9,6 +9,10 @@ import { username, password, auth } from '../API_KEY.js'
 import axios from 'axios';
 import moment from 'moment'
 
+import { styles } from '../styles/global.js'; //CSS equivalent
+
+import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
+
 //npm install react-native-paper
 import { TextInput } from 'react-native-paper';
 
@@ -54,50 +58,74 @@ function GetZipCode(props) {
 
     return (
         <ScrollView>
-            <Text>Enter delivery ZIP code: </Text>
-{/*             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>*/}        
-            <View>  
-                <TextInput style={{width:"60%"}}
-                    label="ZIP code"
-                    value={props.zipCode}
-                    keyboardType = 'numeric'
-                    //regex replace removes anything non numeric from string input
-                    onChangeText={text => props.setZipCode(text.replace(/\D/g,''))}
-                    maxLength={5}
-                />
-                </View>      
-{/*             </TouchableWithoutFeedback> */}        
+            <View style={styles.card}>
+                <View style={styles.cardCenteredContent}>
+                    <Text style={styles.header_text}>Enter delivery ZIP code</Text>
+                {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}>*/}        
+                    {/* <TextInput style={{width:"50%"}}
+                        label="delivery ZIP code"
+                        value={props.zipCode}
+                        keyboardType = 'numeric'
+                        //regex replace removes anything non numeric from string input
+                        onChangeText={text => props.setZipCode(text.replace(/\D/g,''))}
+                        maxLength={5}
+                    /> */}
+                    <SmoothPinCodeInput
+                        cellStyle={{
+                            borderBottomWidth: 2,
+                            borderColor: 'pink',
+                        }}
+                        cellStyleFocused={{
+                            borderColor: 'red',
+                        }}
+                        codeLength={5}
+                        value={props.zipCode}
+                        onTextChange={code => props.setZipCode(code.replace(/\D/g,''))}
+                    />
+                    <Text></Text>
+                {/* </TouchableWithoutFeedback> */}
+                </View>
+            </View>
+                    
             {(props.zipCode && maxDate && props.zipCode.toString().length == 5)?
             <>
-                <Text>CALENDAR HERE</Text>
-                <CalendarPicker
-                    //specifies dates that cannot be selected. 
-                    //Array of Dates, or a function that returns true for a given Moment date
-                    disabledDates={(checkDay) => CanDeliverToday(checkDay, markedDates)}
-                    minDate={minDate}
-                    maxDate={maxDate}
-                    //Months are scrollable if true
-                    scrollable={true}
-                    //restirct months allowed to scroll to
-                    restrictMonthNavigation={true}
-                    //sets state of selected day to MM/DD/YYYY
-                    onDateChange={(call) => props.setSelectedDay(moment(call).format('MM/DD/YYYY'))}
-                />
-                {(props.selectedDay)?
-                <>
-                    <Text>Selected delivery day is {props.selectedDay}.</Text>
-                    <Button
-                        title="Deliver"
-                        //because this is a nested navigator, it's a bit complicated...
-                        onPress={() => navigation.navigate('Ordering', { screen: 'Delivery Address' })}
+            <View style={styles.card}>
+                <View style={styles.cardCalendarContent}>
+                    <Text style={styles.header_text}>Available delivery dates</Text>
+                    <CalendarPicker 
+                        //specifies dates that cannot be selected. 
+                        //Array of Dates, or a function that returns true for a given Moment date
+                        disabledDates={(checkDay) => CanDeliverToday(checkDay, markedDates)}
+                        minDate={minDate}
+                        maxDate={maxDate}
+                        //Months are scrollable if true
+                        scrollable={true}
+                        //restirct months allowed to scroll to
+                        restrictMonthNavigation={true}
+                        //sets state of selected day to MM/DD/YYYY
+                        onDateChange={(call) => props.setSelectedDay(moment(call).format('MM/DD/YYYY'))}
                     />
-                </>
-                :
-                <>
-                    <Text>Select a delivery day.</Text>
-                </>
-                }
-    
+                </View>
+            </View>
+
+            <View style={styles.card}>
+                <View style={styles.cardContent}>
+                    {(props.selectedDay)?
+                    <>
+                        <Text style={styles.subHeaderText}>Selected delivery day is {props.selectedDay}.</Text>
+                        <Button
+                            title="Deliver"
+                            //because this is a nested navigator, it's a bit complicated...
+                            onPress={() => navigation.navigate('Ordering', { screen: 'Delivery Address' })}
+                        />
+                    </>
+                    :
+                    <>
+                        <Text style={styles.subHeaderText}>Select a delivery day.</Text>
+                    </>
+                    }
+                </View>
+            </View>
             </>
         :
         <></>}
@@ -132,24 +160,5 @@ async function GetDeliveryDates(zip) {
 
     return obj.DATES
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    box: {
-        borderWidth: 5,
-        borderColor: '#777',
-        color: '#000',
-        justifyContent: 'center',
-        flex: 1,
-        width: '50%',
-        height: 80,
-        marginTop: 20
-    }
-});
 
 export default GetZipCode;
