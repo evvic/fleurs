@@ -37,10 +37,15 @@ function HomeScreen({ navigation, route }) {
         const data = await api.post("/shoppingcart") 
         const obj = await data.data
     
-        let temp = await obj.SESSIONID
-        updateCart(temp)
-        console.log("updateCart " + temp)
-        return temp
+        if("errors" in obj) {
+          console.log("Error creating cart: " + obj.errors)
+        }
+        else {
+          let temp = await obj.SESSIONID
+          updateCart(temp)
+          console.log("updateCart " + temp)
+          return temp
+        }
     }
 
     React.useEffect(() => {
@@ -107,6 +112,12 @@ function HomeScreen({ navigation, route }) {
                 <Picker.Item label={"Anniversary"} value={"an"} />
                 <Picker.Item label={"Everyday"} value={"ao"} />
                 <Picker.Item label={"Thank You"} value={"ty"} />
+                <Picker.Item label={"Love & Romance"} value={"lr"} />
+                <Picker.Item label={"Get Well"} value={"gw"} />
+                <Picker.Item label={"New Baby"} value={"nb"} />
+                <Picker.Item label={"Centerpieces"} value={"c"} />
+                <Picker.Item label={"Fruit Baskets"} value={"x"} />
+                <Picker.Item label={"Flowers Under $60"} value={"u61"} />
             </Picker>
             :
             <Text>loading...</Text>}

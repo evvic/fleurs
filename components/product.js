@@ -25,8 +25,7 @@ function Product(props) {
         };
     }, [])
 
-    let Image_Http_URL ={ uri: props.obj.LARGE};
-    //console.log(props.obj)
+    let Image_Http_URL = { uri: props.obj.LARGE };
 
     return (
         <View style={styles.container}>
