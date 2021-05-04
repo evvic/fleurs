@@ -44,29 +44,13 @@ function Product(props) {
                     imageStyle={{borderRadius: 15}}
                 >
                     <View style={styles.productCardContents}>
-                    {/* <Image
-                        background={true}
-                        width={Dimensions.get('window').width} // height will be calculated automatically
-                        source={Image_Http_URL}
-                        onPress={() => {console.log("image pressed")}}
-                    > */}
-                    <View className="flower-pot" >
-                        <View className="flower-icon">
-                            {/* <Image source={Image_Http_URL}
-                                //image NEEDS width and height style
-                                style={{width:400, height:400}}  
-                            /> */}
-                        </View>
                         <Text>${props.obj.PRICE}</Text>
-                        
-                        {/* <Text>{props.obj.DESCRIPTION}</Text> */}
-                    </View>
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
             {(expanded)?
             <View style={styles.productCardContents}>
-                <Text>image clicked!</Text>
+                <Text style={{fontSize: 1}}>.</Text>
                 <Text style={styles.paragrah_text}>{props.obj.DESCRIPTION}</Text>
                 
                 <Button
@@ -84,7 +68,6 @@ function Product(props) {
                 <Text style={styles.subtle_text}>Tap product to get details</Text>
             </View>
             }
-            {/* </Image> */}
         </View>
     );
 }

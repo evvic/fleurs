@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native'; 
-import { Text, View, Image, Button, ActivityIndicator } from "react-native";
+import { Text, View, Image, Button, ActivityIndicator, ImageBackground } from "react-native";
 import { username, password, auth } from '../API_KEY.js'
-import { styles } from '../styles/global.js'
+import { styles } from '../styles/product.js'
 import axios from 'axios';
-
 
 var api = axios.create({
     baseURL: 'https://www.floristone.com/api/rest',
@@ -39,7 +38,7 @@ function CartItem(props) {
         if("errors" in obj) {
             setError(obj.errors)
             return {NAME: "error", DESCRIPTION: obj.errors}
-        } 
+        }
         else {
             setError(null)
             console.log(obj.PRODUCTS[0])
@@ -47,41 +46,44 @@ function CartItem(props) {
             let temp = await obj.PRODUCTS[0]
             setProduct(temp)
             return obj.PRODUCTS[0]
-        }
-
-        
+        }        
     }
 
-    let Image_Http_URL ={ uri: product.LARGE};
-    //console.log(props.obj)
+    let Image_Http_URL = { uri: product.LARGE };
 
     return (
         (!error)? 
-            <View style={styles.container}>
-                <Text>{props.code}</Text>
-                {(loaded)?
-                <View className="flower-pot" style={styles.flower_pot}>
-                    <View className="flower-icon">
-                        <Image source={Image_Http_URL}
-                            //image NEEDS width and height style
-                            style={{width:400, height:400}}  
-                        />
+        <>
+            {(loaded)?
+            <View style={styles.cartCard}>
+                <Text style={styles.header_text}>{product.NAME}</Text>
+                <ImageBackground 
+                    source={Image_Http_URL} 
+                    style={styles.image}
+                    imageStyle={{borderRadius: 15}}
+                >
+                    <View style={styles.productCardContents}>
+                        <Text>${product.PRICE}</Text>
                     </View>
-                    <Text>{product.NAME}</Text>
-                    <Text>${product.PRICE}</Text>
-                    <Text>{product.DESCRIPTION}</Text>
+                </ImageBackground>
+                <View style={styles.productCardContents}>
+                    <Text style={{fontSize: 1}}>.</Text>
+                    <Text style={styles.paragrah_text}>{product.DESCRIPTION}</Text>
+                    
                     <Button
                         title="Place order"
                         onPress={() => navigation.navigate('Ordering', {
                             product: product
                         })}
+                        color="#9AC791" //green
                     />
                 </View>
-                :
-                <ActivityIndicator size="large" color="#0000ff" />
-                }
-                
+
             </View>
+            :
+                <></>
+            }
+        </>
         :
             <>
                 <Text>Error</Text>

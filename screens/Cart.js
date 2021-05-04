@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { View, Text, Button, FlatList } from 'react-native';
+import { View, Text, Button, FlatList, ScrollView } from 'react-native';
 import axios from 'axios';
 import { username, password, auth } from './../API_KEY.js'
 import CartItem from '../components/cart_item.js'
-
+import { styles } from '../styles/product'
 
 function CartScreen({ route, navigation }) {
     //get params. If none were passed, inital ones will be used
@@ -23,11 +23,17 @@ function CartScreen({ route, navigation }) {
         setCartItems(temp)
     }
 
+    //keep styling above card
+
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Cart</Text>
-            <Text>itemId: {JSON.stringify(itemId)}</Text>
-            <Text>otherParam: {JSON.stringify(CartID)}</Text>
+        <ScrollView>
+            <View style={styles.productCard}>
+                <View style={styles.productCardContents}>
+                    <Text style={styles.header_text_centered}>Basket</Text>
+                    <Text style={styles.subtle_text}>Cart ID</Text>
+                    <Text style={styles.subtle_text}>{JSON.stringify(CartID)}</Text>
+                </View>
+            </View>
             {(!error)?
                 <FlatList 
                     //style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', flexGrow: 0}}
@@ -40,12 +46,13 @@ function CartScreen({ route, navigation }) {
                     <Button
                         onPress={UpdateCart()}
                         title="Retry"
+                        
                     />
                 </>
             }
             
       
-      </View>
+      </ScrollView>
     );
 }
 //navigation.push creates a new page (can make duplicates)

@@ -36,6 +36,12 @@ export const styles = StyleSheet.create ({
         paddingTop: 9,
         paddingHorizontal: 10
     },
+    header_text_centered: {
+        fontSize: 20,
+        paddingTop: 9,
+        paddingHorizontal: 10,
+        textAlign: 'center',
+    },
     subtle_text: {
         marginBottom: 2,
         fontStyle: 'italic',
@@ -47,11 +53,26 @@ export const styles = StyleSheet.create ({
         fontSize: 15,
         lineHeight: 22
     },
-
-
     bottom: {
         flex: 1,
         justifyContent: 'flex-end',
         marginBottom: 36
-      }
+    },
+
+    //CART ITEM CARD STYLES
+
+    cartCard: {
+        borderRadius: 15,
+        elevation: 6,
+        backgroundColor: '#fff',
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: '#333',
+        shadowOpacity: 0.4,
+        shadowRadius: 2,
+        marginHorizontal: 10,
+        marginVertical: 8,
+        padding: 1,
+        //
+        flex: 1
+    },
 })
