@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native'; 
-import { StyleSheet, Text, View, UIManager, Button, WebView } from "react-native";
+import { StyleSheet, Text, View, UIManager, Button, WebView, ActivityIndicator } from "react-native";
 import { username, password, auth } from '../API_KEY.js'
 import axios from 'axios';
 import moment from 'moment'
@@ -22,9 +22,10 @@ import * as yup from 'yup'
 const ReviewSchema = yup.object({
     name: yup.string().required().min(1),
     number: yup.string().required().length(16).matches(/^\d+$/, "must be all digits"),
-    month: yup.string().required().max(2).matches(/^\d+$/, "must be all digits"),
-    year: yup.string().required().length(4).matches(/^\d+$/, "must be all digits"),
-    CVC: yup.string().required().length(3).matches(/^\d+$/, "must be all digits")
+    //month: yup.string().required().max(2).matches(/^\d+$/, "must be all digits"),
+    //year: yup.string().required().length(4).matches(/^\d+$/, "must be all digits"),
+    CVC: yup.string().required().length(3).matches(/^\d+$/, "must be all digits"),
+    date: yup.string().required().length(7)
 })
 
 function Payment(props) {
@@ -54,11 +55,20 @@ function Payment(props) {
         };
     }, [])
 
+    React.useLayoutEffect(() => {
+        if(props.token != null) {
+            console.log("useLayoutEffect + token != null")
+            navigation.navigate('Ordering', { screen: 'Place Order' })
+        }
+        else console.log("useLayoutEffect + token == null")
+
+    }, [props.token])
+
     const AddCardInfo = (info) => {
         setCardInfo({
             cardNumber: info.number,
-            month: info.month,
-            year: info.year,
+            month: info.date.slice(0,2),
+            year: info.date.slice(3),
             cardCode: info.CVC
         })
     }
@@ -79,82 +89,72 @@ function Payment(props) {
 
     }
 
-    function waiting(i) {
-        if(props.token == null) {
-            setTimeout(waiting(i + 1), 1000);//wait 50 millisecnds then recheck
-            console.log("waiting i = " + i)
-            return;
-        }
-    }
 
     return (
         <View>
-            <Text>IN BILLING</Text>
             <Formik
                 initialValues={{name: props.billingAddress.name, number: "4242424242424242", 
-                    month: "01", year: "2022",  CVC: "111"}}
+                    /* month: "01", year: "2022", */ date: "01/2022", CVC: "111"}}
                 onSubmit={ values => {
-                    console.log("onSubmit")
+                    console.log("onSubmit Payment")
                     AddCardInfo(values)
                     props.setToken(null) //payment info is changing so reset token
-
                     setCompleted(true)
-
-                    waiting(0)
-                    console.log("token", props.token)
-                    console.log("done waiting")
-                    navigation.navigate('Ordering', { screen: 'Place Order' })
-                    console.log("after navigate")
+                    
                 }}
                 validationSchema={ReviewSchema}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-                    <View>
-                        <TextInput
-                            label="Card holder's name"
-                            error={(touched.name && errors.name)? true : false }
-                            onChangeText={handleChange('name')}
-                            onBlur={handleBlur('name')}
-                            value={values.name}
-                        />
-                        <Text style={styles.error_text}>{touched.name && errors.name}</Text>
-                        <TextInput
-                            label="Card number"
-                            error={(touched.number && errors.number)? true : false }
-                            keyboardType = 'phone-pad'
-                            onChangeText={handleChange('number')}
-                            onBlur={handleBlur('number')}
-                            value={values.number}
-                        />
-                        <Text style={styles.error_text}>{touched.number && errors.number}</Text>
-                        <TextInput
-                            label="Expiration month"
-                            error={(touched.month && errors.month)? true : false }
-                            keyboardType = 'phone-pad'
-                            onChangeText={handleChange('month')}
-                            onBlur={handleBlur('month')}
-                            value={values.month}
-                        />
-                        <Text style={styles.error_text}>{touched.month && errors.month}</Text>
-                        <TextInput
-                            label="Expiration year"
-                            error={(touched.year && errors.year)? true : false }
-                            keyboardType = 'phone-pad'
-                            onChangeText={handleChange('year')}
-                            onBlur={handleBlur('year')}
-                            value={values.year}
-                        />
-                        <Text style={styles.error_text}>{touched.year && errors.year}</Text>
-                        <TextInput
-                            label="CVC"
-                            error={(touched.month && errors.month)? true : false }
-                            keyboardType = 'phone-pad'
-                            onChangeText={handleChange('CVC')}
-                            onBlur={handleBlur('CVC')}
-                            value={values.CVC}
-                        />
-                        <Text style={styles.error_text}>{touched.CVC && errors.CVC}</Text>
-                        <Button onPress={handleSubmit} title="Submit" />
+                    <View style={styles.card}>
+                        <View style={styles.cardContent}>
+                            <Text style={styles.header_text}>Payment Information</Text>
+                            <TextInput
+                                label="Card holder's name"
+                                error={(touched.name && errors.name)? true : false }
+                                onChangeText={handleChange('name')}
+                                onBlur={handleBlur('name')}
+                                value={values.name}
+                            />
+                            <Text style={styles.error_text}>{touched.name && errors.name}</Text>
+                            <TextInput
+                                label="Card number"
+                                error={(touched.number && errors.number)? true : false }
+                                keyboardType = 'phone-pad'
+                                onChangeText={handleChange('number')}
+                                onBlur={handleBlur('number')}
+                                value={values.number}
+                            />
+                            <Text style={styles.error_text}>{touched.number && errors.number}</Text>
+                            <View /* style={styles.ccRow} */>
+                                <View>
+                                    <TextInput
+                                        label="Expiration date"
+                                        error={(touched.month && errors.month)? true : false }
+                                        keyboardType = 'phone-pad'
+                                        onChangeText={handleChange('date')}
+                                        onBlur={handleBlur('date')}
+                                        value={ (values.date.length > 2)? 
+                                            values.date.slice(0, 2) + '/' + values.date.slice(3)
+                                            :
+                                            values.date
+                                        }
+                                    />
+                                    <Text style={styles.error_text}>{touched.date && errors.date}</Text>
+                                </View>
+                                <View /* style={styles.ccInputWrap} */ >
+                                    <TextInput
+                                        label="CVC"
+                                        error={(touched.month && errors.month)? true : false }
+                                        keyboardType = 'phone-pad'
+                                        onChangeText={handleChange('CVC')}
+                                        onBlur={handleBlur('CVC')}
+                                        value={values.CVC}
+                                    />
+                                    <Text style={styles.error_text}>{touched.CVC && errors.CVC}</Text>
+                                </View>
+                            </View>
+                            <Button onPress={handleSubmit} title="Submit" />
+                        </View>
                     </View>
                     
                 )}
@@ -162,7 +162,14 @@ function Payment(props) {
 
             {(completed && !loading && props.token == null)?
                 <>
-                    <Text>Creating token...</Text>
+                    <View style={styles.card}>
+                        <View style={styles.cardCenteredContent}>
+                            <ActivityIndicator size="large" color="#0000ff" />
+                            <Text>Creating token...</Text>
+                        </View>
+                    </View>
+
+                    
                     <ContentView test={7} authorizeData={authorizeData} 
                         cardInfo={cardInfo} {...props}/>
                 </>

@@ -165,6 +165,7 @@ const ContentView = (props) => {
                     else {
                         let nonce = response.opaqueData.dataValue
                         props.setToken(nonce)
+                        console.log("set token!")
                     }
                 }}
                 //testing 

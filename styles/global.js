@@ -11,6 +11,10 @@ export const styles = StyleSheet.create ({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    flower_pot: {
+        //width:"40%",
+        backgroundColor:"#add8e6",
+    },
     box: {
         borderWidth: 5,
         borderColor: '#777',
@@ -99,6 +103,17 @@ export const styles = StyleSheet.create ({
     toggleText: {
         paddingTop: 4,
         paddingLeft: 5,
+    },
+    ccRow: {
+        flex: 1,
+        flexDirection: "row",
+        marginBottom: 100
+    },
+    ccInputWrap: {
+        flex: 1,
+        //borderColor: "#cccccc",
+        //borderBottomWidth: 1,
+        //marginBottom: 10
     }
 
 });

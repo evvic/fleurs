@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native'; 
-import { StyleSheet, Text, View, Image, Button } from "react-native";
-import { Card,  } from 'react-native-elements' //npm install react-native-elements
+import { Text, View, Image, Button, ActivityIndicator } from "react-native";
 import { username, password, auth } from '../API_KEY.js'
-import { styles } from './product_style.js'; //CSS equivalent
+import { styles } from '../styles/global.js'
 import axios from 'axios';
+
 
 var api = axios.create({
     baseURL: 'https://www.floristone.com/api/rest',
@@ -78,7 +78,7 @@ function CartItem(props) {
                     />
                 </View>
                 :
-                <Text>Loading...</Text>
+                <ActivityIndicator size="large" color="#0000ff" />
                 }
                 
             </View>
@@ -105,14 +105,5 @@ async function AddItemToCart(product_code, cart_id) {
     console.log(obj)
 
 }
-
-//Ugly Card
-{/* <Card>
-    <Card.Title>{props.obj.NAME}</Card.Title>
-    <Card.Divider/>
-    <div className="flower-icon">
-        <img style={{width:'200px'}} src= {props.obj.LARGE} />
-    </div>
-</Card> */}
 
 export default CartItem;
