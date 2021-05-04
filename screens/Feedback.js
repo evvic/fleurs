@@ -10,7 +10,7 @@ export default function Feedback({ navigation, route }) {
           headerRight: () => (
             <Button
                 onPress={() => navigation.navigate('Cart')}
-                title="Cart"
+                title="Basket"
                 color="#A7C7E7"
               />
           ),
@@ -26,18 +26,24 @@ export default function Feedback({ navigation, route }) {
           value={feedbackText}
           onChangeText={setFeedbackText}
         />
-        <Button
-          title="Done"
-          onPress={() => {
-            // Pass params back to home screen
-            navigation.navigate('Home', { feedback: feedbackText });
-          }}
-        />
-        <Button
-            title="Update the title"
-            //can edit navigation options while on screen
-            onPress={() => navigation.setOptions({ title: 'Updated!' })}
-        />
+        <View style={{padding: 10, marginHorizontal: 70}}>
+          <Button
+            title="Done"
+            onPress={() => {
+              // Pass params back to home screen
+              navigation.navigate('Home', { feedback: feedbackText });
+            }}
+            color="#dcc2ee"
+          />
+        </View>
+        <View style={{padding: 10, marginHorizontal: 70}}>
+          <Button
+              title="Update the title"
+              //can edit navigation options while on screen
+              onPress={() => navigation.setOptions({ title: 'Updated!' })}
+              color="#A7C7E7"
+          />
+        </View>
       </>
     );
   }

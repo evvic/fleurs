@@ -24,6 +24,7 @@ function HomeScreen({ navigation, route }) {
     //const [categories, setCategories] = React.useState([])
     //const [listCategories, setListCategories] = React.useState([<Picker.Item label="temp" value="temp" />])
     const [loaded, setLoaded] = React.useState(false)
+    const [loadedProducts, setLoadedProducts] = React.useState(true)
 
     /* const onChangeSS = (value) => {
       setCategory(value.toString());
@@ -103,22 +104,27 @@ function HomeScreen({ navigation, route }) {
             
             {(loaded)? 
             <>
-              <Pickers category={category} setCategory={setCategory} 
-                sorttype={sorttype} setSorttype={setSorttype} />
+              <Pickers category={category} setCategory={setCategory} sorttype={sorttype}
+                setSorttype={setSorttype} loadedProducts={loadedProducts}/>
             </>
             :
             <Text>loading...</Text>}
             
             {/* <Text>{welcome}</Text> */}
             {(category)?
-            <Products category={category} sorttype={sorttype} sessionid={cartID}/>
+            <Products category={category} sorttype={sorttype} sessionid={cartID}
+              loadedProducts={loadedProducts} setLoadedProducts={setLoadedProducts}/>
             :
             <Text>select category</Text>
             }
-            <Button
+            <View style={{paddingVertical: 80, margin: 40}}>
+              <Button
                 title="Write feedback"
                 onPress={() => navigation.navigate('Feedback')}
-            />
+                color="#A7C7E7"
+              />
+            </View>
+            
             
         </View>
     );

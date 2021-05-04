@@ -96,7 +96,13 @@ export default function App() {
             component={CartScreen} 
             initialParams={{itemId: 0, CartID: sessionID, name: "User"}}
             options={({ route }) => ({ title: `${route.params.name}'s Basket`})}/>
-         <Stack.Screen name="Feedback" component={Feedback}/>
+         <Stack.Screen 
+          name="Feedback" 
+          component={Feedback}
+          options={{
+            headerRightContainerStyle: {
+            marginRight: 10 //for cart button in Home/header
+          }}}/>
          <Stack.Screen name="Ordering" component={OrderScreen}/>
         </Stack.Navigator>
       </NavigationContainer>

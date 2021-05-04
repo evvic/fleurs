@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker'; //npm install @react-native-picker/picker --save
 import { styles } from '../styles/home.js'
 
@@ -47,6 +47,14 @@ export default function Pickers(props) {
                     </Picker>
                 </View>
               </View>
+                {(props.loadedProducts)?
+                <></> //products have loaded
+                :
+                <View>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+            }
+              
             </View>
     )
 }

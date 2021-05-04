@@ -17,6 +17,9 @@ function Products(props) {
         //console.log("parseProducts")
         /* JSON PRODUCT OPTIONS */
         //console.log("products category: " + props.category)
+        
+        console.log("beginning: " + props.loadedProducts)
+
         let category = props.category
         let count = (category == "any")? 200 : 50
         let start = 1
@@ -35,6 +38,10 @@ function Products(props) {
         
         const data = await fetch(url, options) 
         const obj = await data.json()
+
+        props.setLoadedProducts(true) //products have not loaded yet
+        
+
         if("errors" in obj) {
             console.log("ERROR CAUGHT")
             setError(obj.errors)
@@ -53,8 +60,10 @@ function Products(props) {
     }  
 
     async function purgatory() {
+        props.setLoadedProducts(false) //products have not loaded yet
         let arr = await parseProducts()
         setFlowers(arr)
+        console.log("ending: " + props.loadedProducts)
     }
 
     React.useEffect(() => {
@@ -66,7 +75,7 @@ function Products(props) {
         return () => {
             console.log("unmounted")
         };
-    }, [props])
+    }, [props.category, props.sorttype])
 
     return (
         <View > 
@@ -74,13 +83,14 @@ function Products(props) {
             {(!error)?
             <FlatList 
                 //style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', flexGrow: 0}}
-                style={{paddingTop: 80}}
+                style={{paddingVertical: 80, marginBottom: 30}}
                 data={flowers}
                 renderItem={({item}) => <Product obj={item} sessionid={props.sessionid}/>}
             />
-            :   <>
-                    <Text>Error retrieving products: {error}</Text>
-                </>
+            :   
+            <View style={{paddingTop: '60%'}}>
+                <Text style={{textAlign: 'center'}}>Error retrieving products: {error}</Text>
+            </View>
             }
             
         </View>
