@@ -81,11 +81,15 @@ export default function App() {
             title: 'Fleurs',
             headerStyle: {
               backgroundColor: '#dcc2ee',
+              
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
               fontWeight: 'bold',
             },
+            headerRightContainerStyle: {
+              marginRight: 10 //for cart button in Home/header
+            }
           }}/>
           <Stack.Screen 
             name="Cart" 

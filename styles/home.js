@@ -22,6 +22,7 @@ export const styles = StyleSheet.create ({
         alignItems:'center', //
         marginHorizontal: 10,
         marginVertical: 10,
+        marginBottom: 15,
     },
     homeCardLeftSide: {
         flex:1,
@@ -43,6 +44,7 @@ export const styles = StyleSheet.create ({
         paddingTop: 30,
         marginLeft: 2,
         marginRight: 2,
+        marginBottom: 3,
         flex: 1,
     },
     container: {

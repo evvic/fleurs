@@ -70,9 +70,9 @@ function HomeScreen({ navigation, route }) {
         navigation.setOptions({
           headerRight: () => (
             <Button 
-                style={{paddingHorizontal: 5, marginRight: 5}}
+                style={{paddingHorizontal: 30}}
                 onPress={() => navigation.navigate('Cart')}
-                title="Cart"
+                title="Basket"
                 color="#A7C7E7"
               />
           ),

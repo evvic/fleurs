@@ -8,7 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@freakycoder/react-native-bounceable": "^0.2.4",
+    "@freakycoder/react-native-bounceable": "^0.2.5",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-picker/picker": "^1.15.0",
     "@react-navigation/native": "^5.9.4",
@@ -34,6 +34,7 @@
     "react-native-paper": "^4.8.1",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.9",
+    "react-native-scalable-image": "^1.1.0",
     "react-native-screens": "~2.15.2",
     "react-native-smooth-pincode-input": "^1.0.9",
     "react-native-toast-message": "^1.4.9",

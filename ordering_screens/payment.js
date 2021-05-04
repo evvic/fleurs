@@ -153,7 +153,10 @@ function Payment(props) {
                                     <Text style={styles.error_text}>{touched.CVC && errors.CVC}</Text>
                                 </View>
                             </View>
-                            <Button onPress={handleSubmit} title="Submit" />
+                            <Button 
+                            onPress={handleSubmit} 
+                            title="Submit"
+                            disabled={completed && !loading && props.token == null} />
                         </View>
                     </View>
                     
@@ -174,7 +177,7 @@ function Payment(props) {
                         cardInfo={cardInfo} {...props}/>
                 </>
             :
-                <Text>loading</Text>
+                <></>
             }
             
         </View>

@@ -74,6 +74,7 @@ function Products(props) {
             {(!error)?
             <FlatList 
                 //style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', flexGrow: 0}}
+                style={{paddingTop: 80}}
                 data={flowers}
                 renderItem={({item}) => <Product obj={item} sessionid={props.sessionid}/>}
             />
