@@ -41,7 +41,7 @@ function GetDeliveryAddy(props) {
             address1: addy.address1,
             address2: addy.address2,
             city: addy.city,
-            state: addy.state,
+            state: addy.state.toUpperCase(),
             zip: addy.zip,
             country: addy.country,
             phone: addy.phone
