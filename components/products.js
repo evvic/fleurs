@@ -70,7 +70,7 @@ function Products(props) {
 
     return (
         <View > 
-            <Text>Products {props.sessionid}</Text>
+            {/* <Text>Products {props.sessionid}</Text> */}
             {(!error)?
             <FlatList 
                 //style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', flexGrow: 0}}

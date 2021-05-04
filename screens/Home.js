@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
-
+import { View, Text, Button } from 'react-native';
+import styles from '../styles/home.js'
 import Products from './../components/products.js'
+import Pickers from './../components/pickers.js'
 import { username, password, auth } from './../API_KEY.js'
 import { returnCategories } from './../getcategories.js'
 import axios from 'axios';
@@ -68,7 +69,8 @@ function HomeScreen({ navigation, route }) {
     React.useLayoutEffect(() => {
         navigation.setOptions({
           headerRight: () => (
-            <Button
+            <Button 
+                style={{paddingHorizontal: 5, marginRight: 5}}
                 onPress={() => navigation.navigate('Cart')}
                 title="Cart"
                 color="#A7C7E7"
@@ -98,52 +100,25 @@ function HomeScreen({ navigation, route }) {
 
     return (
         <View>
-            <Text>Home Zcreen</Text>
-            <Button
-                title="Write feedback"
-                onPress={() => navigation.navigate('Feedback')}
-            />
+            
             {(loaded)? 
             <>
-              <Picker
-                style={styles.dropdown_container}
-                selectedValue={category}
-                onValueChange={(itemValue, itemIndex) => setCategory(itemValue)
-                }>
-                  <Picker.Item label={"All"} value={"all"} />
-                  <Picker.Item label={"Birthday"} value={"bd"} />
-                  <Picker.Item label={"Anniversary"} value={"an"} />
-                  <Picker.Item label={"Everyday"} value={"ao"} />
-                  <Picker.Item label={"Thank You"} value={"ty"} />
-                  <Picker.Item label={"Love & Romance"} value={"lr"} />
-                  <Picker.Item label={"Get Well"} value={"gw"} />
-                  <Picker.Item label={"New Baby"} value={"nb"} />
-                  <Picker.Item label={"Centerpieces"} value={"c"} />
-                  <Picker.Item label={"Fruit Baskets"} value={"x"} />
-                  <Picker.Item label={"Flowers Under $60"} value={"u61"} />
-              </Picker>
-              <Picker
-                style={styles.dropdown_container}
-                selectedValue={sorttype}
-                onValueChange={(itemValue, itemIndex) => setSorttype(itemValue)
-                }>
-                  <Picker.Item label={"None"} value={null} />
-                  <Picker.Item label={"Price Ascending"} value={"pa"} />
-                  <Picker.Item label={"Price Descending"} value={"pd"} />
-                  <Picker.Item label={"Alphabetical (a-z)"} value={"az"} />
-                  <Picker.Item label={"Alphabetical (z-a)"} value={"za"} />
-              </Picker>
+              <Pickers category={category} setCategory={setCategory} 
+                sorttype={sorttype} setSorttype={setSorttype} />
             </>
             :
             <Text>loading...</Text>}
             
-            
-            <Text>{welcome}</Text>
+            {/* <Text>{welcome}</Text> */}
             {(category)?
             <Products category={category} sorttype={sorttype} sessionid={cartID}/>
             :
             <Text>select category</Text>
             }
+            <Button
+                title="Write feedback"
+                onPress={() => navigation.navigate('Feedback')}
+            />
             
         </View>
     );
@@ -176,20 +151,5 @@ async function Intro() {
   let msg = await obj.WELCOME
   return msg
 }
-
-const styles = StyleSheet.create({
-    dropdown_container: {
-        paddingTop: 30,
-        marginLeft: 20,
-        marginRight: 20,
-        flex: 1,
-    },
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        },
-  });
 
 export default HomeScreen;

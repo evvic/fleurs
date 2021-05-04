@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native'
+import { StyleSheet } from 'react-native'
 /* flower-pot is the main container for each product */
 
 /* For some reason, Reac Native does NOT use CSS files so
