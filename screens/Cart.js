@@ -10,18 +10,21 @@ function CartScreen({ route, navigation }) {
     const { itemId, CartID } = route.params;
     const [cartItems, setCartItems] = React.useState([])
     let [error, setError] = React.useState(null)     //error fetching
+    const [updated, setUpdated] = React.useState(false)
 
     React.useEffect(() => {
-        console.log("non-async cartItems")
-        console.log("CART: CARTID: " + CartID )
 
         UpdateCart()
-    }, [])
+    }, [updated])
 
     async function UpdateCart() {
+        setCartItems([])
         let temp = await GetCart(CartID, setError)
+        console.log(temp)
         if(temp == null) console.log("was an error in GetCart")
+        else if(temp.length == 0) console.log("cart is empty")
         setCartItems(temp)
+        setUpdated(false)
     }
 
     //keep styling above card
@@ -33,22 +36,30 @@ function CartScreen({ route, navigation }) {
                     <Text style={styles.header_text_centered}>Basket</Text>
                     <Text style={styles.subtle_text}>Cart ID</Text>
                     <Text style={styles.subtle_text}>{JSON.stringify(CartID)}</Text>
+                    <Text style={styles.subtle_text}>Items in cart: {cartItems.length}</Text>
                 </View>
             </View>
+
             {(!error)?
-                <FlatList 
+            <>
+                {(cartItems.length > 0)?
+                    <FlatList 
                     //style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', flexGrow: 0}}
                     data={cartItems}
-                    renderItem={({item}) => <CartItem code={item.CODE} cart={CartID} />}
+                    renderItem={({item}) => <CartItem code={item.CODE} 
+                        cart={CartID} setUpdated={setUpdated}/>}
                 />
+                :
+                <View style={styles.productCard}>
+                    <View style={styles.productCardContents}>
+                        <Text style={styles.header_text_centered}>😭 Oh no! The cart is empty!</Text>
+                    </View>
+                </View>
+                }
+            </>
             :
                 <>
                     <Text>Error retrieving cart: {error}</Text>
-                    <Button
-                        onPress={UpdateCart()}
-                        title="Retry"
-                        
-                    />
                 </>
             }
             
@@ -78,7 +89,7 @@ async function GetCart(sessionid, setError) {
         return null
     }
     else {
-        console.log(obj.products)
+        //console.log(obj.products)
         setError(null)
         return obj.products
     }

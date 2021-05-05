@@ -218,7 +218,7 @@ async function RemoveItemFromCart(id, code) {
     });
 
     //action=add as items are beign added here
-    const data = await api.put(`/shoppingcart?sessionid=${id}&action=add&productcode=${code}`) 
+    const data = await api.put(`/shoppingcart?sessionid=${id}&action=remove&productcode=${code}`) 
     const obj = await data.data
 
     if("errors" in obj) {

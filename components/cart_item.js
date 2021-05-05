@@ -19,13 +19,11 @@ function CartItem(props) {
 
     React.useEffect(() => {
         // this is called when the component is mounted
-        console.log("CART ITEM ID: " + props.cart)
 
         GetProduct()
 
         //anything returned happens when component is unmounted
         return () => {
-            console.log("product unmounted")
         };
     }, [])
 
@@ -70,15 +68,27 @@ function CartItem(props) {
                 <View style={styles.productCardContents}>
                     <Text style={{fontSize: 1}}>.</Text>
                     <Text style={styles.paragrah_text}>{product.DESCRIPTION}</Text>
-                    
-                    <Button
-                        title="Place order"
-                        onPress={() => {
-                            navigation.navigate('Ordering', {
-                                product: product, CartID: props.cart
-                        })}}
-                        color="#9AC791" //green
-                    />
+                    <View style={{paddingVertical: 10}}>
+                        <Button
+                            title="Place order"
+                            onPress={() => {
+                                navigation.navigate('Ordering', {
+                                    product: product, CartID: props.cart
+                            })}}
+                            color="#9AC791" //green
+                        />
+                    </View>
+                    <View style={{paddingVertical: 10}}>
+                        <Button
+                            title="Delete Item"
+                            onPress={async () => {
+                                let resp = await RemoveItemFromCart(props.cart, product.CODE)
+                                console.log("deleted? " + resp)
+                                props.setUpdated(true)
+                            }}
+                            color="#ff6666" //pastel red
+                        />
+                    </View>
                 </View>
 
             </View>
@@ -93,18 +103,25 @@ function CartItem(props) {
     );
 }
 
-async function AddItemToCart(product_code, cart_id) {
-    //PUT /shoppingcart?sessionid={SESSIONID}&action=add&productcode={PRODUCTCODE}
-    console.log("AddItemToCart: " + cart_id)
+async function RemoveItemFromCart(id, code) {
+    console.log("RemoveItemFromCart: " + id + ' and code: ' + code)
     var api = axios.create({
         baseURL: 'https://www.floristone.com/api/rest',
-        timeout: 2000,
         headers: {'Authorization': `Basic ${auth}`}
     });
 
     //action=add as items are beign added here
-    const data = await api.put(`/shoppingcart?sessionid=${cart_id}&action=add&productcode=${product_code}`) 
+    const data = await api.put(`/shoppingcart?sessionid=${id}&action=remove&productcode=${code}`) 
     const obj = await data.data
+
+    if("errors" in obj) {
+        console.log("Error: could not remove item to cart")
+    }
+    else {
+        console.log("successfully removed item to cart")
+    }
+
+    return obj
 }
 
 export default CartItem;

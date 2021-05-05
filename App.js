@@ -100,8 +100,9 @@ export default function App() {
           name="Feedback" 
           component={Feedback}
           options={{
+            headerLeft: null,
             headerRightContainerStyle: {
-            marginRight: 10 //for cart button in Home/header
+              marginRight: 10 //for cart button in Home/header
           }}}/>
          <Stack.Screen name="Ordering" component={OrderScreen}/>
         </Stack.Navigator>
