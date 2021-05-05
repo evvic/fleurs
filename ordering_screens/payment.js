@@ -1,18 +1,10 @@
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native'; 
-import { StyleSheet, Text, View, UIManager, Button, WebView, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, Button, WebView, ActivityIndicator } from "react-native";
 import { username, password, auth } from '../API_KEY.js'
 import axios from 'axios';
-import moment from 'moment'
 import ContentView from './content_view.js'
 import { styles } from '../styles/global.js'; //CSS equivalent
-
-//npm i react-native-keyboard-aware-scroll-view --save
-//^ important to make forms easier to fill
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
-//credit card info library:
-//https://dev.to/halilb/react-native-animated-credit-card-library-1na6
 
 //npm install react-native-paper
 import { TextInput } from 'react-native-paper';
@@ -89,7 +81,6 @@ function Payment(props) {
 
     }
 
-
     return (
         <View>
             <Formik
@@ -118,6 +109,7 @@ function Payment(props) {
                             <Text style={styles.error_text}>{touched.name && errors.name}</Text>
                             <TextInput
                                 label="Card number"
+                                editable={false}
                                 error={(touched.number && errors.number)? true : false }
                                 keyboardType = 'phone-pad'
                                 onChangeText={handleChange('number')}
@@ -129,6 +121,7 @@ function Payment(props) {
                                 <View>
                                     <TextInput
                                         label="Expiration date"
+                                        editable={false}
                                         error={(touched.month && errors.month)? true : false }
                                         keyboardType = 'phone-pad'
                                         onChangeText={handleChange('date')}
@@ -168,7 +161,7 @@ function Payment(props) {
                     <View style={styles.card}>
                         <View style={styles.cardCenteredContent}>
                             <ActivityIndicator size="large" color="#0000ff" />
-                            <Text>Creating token...</Text>
+                            <Text style={styles.paymentCardText}>Creating token...</Text>
                         </View>
                     </View>
 
@@ -177,7 +170,14 @@ function Payment(props) {
                         cardInfo={cardInfo} {...props}/>
                 </>
             :
-                <></>
+                <>
+                    <View style={styles.card}>
+                        <View style={styles.cardCenteredContent}>
+                            <Text style={styles.paymentCardText}>Note! This app is still in testing.</Text>
+                            <Text style={styles.error_text}>Do not enter personal payment information</Text>
+                        </View>
+                    </View>
+                </>
             }
             
         </View>

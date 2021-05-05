@@ -168,6 +168,18 @@ export const styles = StyleSheet.create ({
     paymentCardView: {
         margin: 5,
         //paddingVertical: 10
-    }
+    },
+    chillCard: {
+        borderRadius: 12,
+        elevation: 3,
+        backgroundColor: '#A9A9A9',
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: '#333',
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        marginHorizontal: 6,
+        marginVertical: 6,
+    },
+
 
 });

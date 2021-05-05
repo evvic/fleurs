@@ -134,7 +134,13 @@ function PlaceOrder(props) {
                         <>
                             {(success)?
                             <>
-                                <Text>NAVIGATE TO FEEDBACK PAGE OR SOMETHING SO USER CAN'T GO ACKWARDS AND ORDER AGAIN</Text>
+                                <Text style={styles.paymentCardText}>🌷 Success!</Text>
+                                <Text style={styles.paymentCardText}>🌹 Order has been "placed"!</Text>
+                                <View style={styles.chillCard}>
+                                    <View style={styles.cardContent}>
+                                        <Text style={styles.paymentCardText}>🥀 No payment or flowers will be transacted as the app is still in testing.</Text>
+                                    </View>
+                                </View>
                             </>
                             :
                             <>
