@@ -27,7 +27,7 @@ const ReviewSchema = yup.object({
     state: yup.string().required().length(2),
     //zip
     //country (code)
-    phone: yup.string().required().matches(phoneRegExp, "Phone number is not valid.")
+    phone: yup.string().required().length(10).matches(phoneRegExp, "Phone number is not valid.")
 })
 
 function GetDeliveryAddy(props) {
@@ -68,6 +68,7 @@ function GetDeliveryAddy(props) {
                         <View style={styles.nameAndPhone}>
                             <TextInput
                                 label="Recipient's name"
+                                autoCompleteType='name'
                                 error={(touched.name && errors.name)? true : false }
                                 onChangeText={handleChange('name')}
                                 onBlur={handleBlur('name')}
@@ -78,6 +79,7 @@ function GetDeliveryAddy(props) {
                                 label="Recipient's phone"
                                 error={(touched.phone && errors.phone)? true : false }
                                 keyboardType = 'phone-pad'
+                                autoCompleteType='tel'
                                 onChangeText={handleChange('phone')}
                                 onBlur={handleBlur('phone')}
                                 value={values.phone}

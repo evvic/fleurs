@@ -28,14 +28,14 @@ function OrderScreen({ route, navigation }) {
     })
     let [billingAddress, setBillingAddress] = useState({
         name: "",
-        institution: "",
         address1: "",
         address2: "",
         city: "",
         state: "",
         zip: "",
         country: "",
-        phone: ""
+        phone: "",
+        email: "" //only need email for the "customer"
     })
     let [deliveryAddress, setDeliveryAddress] = useState({
         name: "", institution: "", address1: "", address2: "", city: "", state: "",

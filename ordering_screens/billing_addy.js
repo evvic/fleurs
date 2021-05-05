@@ -17,17 +17,18 @@ import * as yup from 'yup'
 import { TextInput } from 'react-native-paper';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+const emailRegEXp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
 const ReviewSchema = yup.object({
     name: yup.string().required().min(1),
-    institution: yup.string().notRequired(),
     address1: yup.string().required(),
     address2: yup.string().notRequired(),
     city: yup.string().required(),
     state: yup.string().required().length(2),
     //zip
     //country (code)
-    phone: yup.string().required().matches(phoneRegExp, "Phone number is not valid.")
+    phone: yup.string().required().length(10).matches(phoneRegExp, "Phone number is not valid."),
+    email: yup.string().required().matches(emailRegEXp, "Email is not valid."),
 })
 
 function GetBillingAddy(props) {
@@ -39,22 +40,22 @@ function GetBillingAddy(props) {
         // deliveryAddress will still appear empty in here but it was updated
         props.setBillingAddress({
             name: addy.name,
-            institution: addy.institution,
             address1: addy.address1,
             address2: addy.address2,
             city: addy.city,
             state: addy.state,
             zip: addy.zip,
             country: addy.country,
-            phone: addy.phone
+            phone: addy.phone,
+            email: addy.email
         })
     }
 
     return (
         <KeyboardAwareScrollView>
             <Formik
-                initialValues={{ name: '', institution: '', address1: '', address2: '',
-                    city: '', state: '', zip: props.zipCode, country: 'US', phone: '' }}
+                initialValues={{ name: '', address1: '', address2: '',
+                    city: '', state: '', zip: props.zipCode, country: 'US', phone: '', email: '' }}
                 onSubmit={values => {
                     console.log("submitting address...")
                     AddAddress(values)
@@ -71,6 +72,7 @@ function GetBillingAddy(props) {
                             <TextInput
                                 label="Name"
                                 error={(touched.name && errors.name)? true : false }
+                                autoCompleteType='name'
                                 onChangeText={handleChange('name')}
                                 onBlur={handleBlur('name')}
                                 value={values.name}
@@ -80,11 +82,22 @@ function GetBillingAddy(props) {
                                 label="Phone"
                                 error={(touched.phone && errors.phone)? true : false }
                                 keyboardType = 'phone-pad'
+                                autoCompleteType = 'tel'
                                 onChangeText={handleChange('phone')}
                                 onBlur={handleBlur('phone')}
                                 value={values.phone}
                             />
                             <Text style={styles.error_text}>{touched.phone && errors.phone}</Text>
+                            <TextInput
+                                label="Email"
+                                error={(touched.email && errors.email)? true : false }
+                                keyboardType = 'email-address'
+                                autoCompleteType='email'
+                                onChangeText={handleChange('email')}
+                                onBlur={handleBlur('email')}
+                                value={values.email}
+                            />
+                            <Text style={styles.error_text}>{touched.email && errors.email}</Text>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.toggle}>
@@ -94,7 +107,7 @@ function GetBillingAddy(props) {
                                     ios_backgroundColor="#3e3e3e"
                                     onValueChange={() => {
                                         setSameAddress(!sameAddress)
-                                        resetForm()
+                                        //resetForm()
                                     }}
                                     value={sameAddress}
                                 />
@@ -105,16 +118,9 @@ function GetBillingAddy(props) {
                         </View>
                         
                         <TextInput
-                            label="Institution"
-                            disabled={(sameAddress)? true : false}
-                            onChangeText={handleChange('institution')}
-                            onBlur={handleBlur('institution')}
-                            value={values.institution}
-                        />
-                        <Text style={styles.subtle_text}>Example: Evergreen Memorial</Text>
-                        <TextInput
                             label="Address 1"
                             disabled={(sameAddress)? true : false}
+                            autoCompleteType='street-address'
                             error={(touched.address1 && errors.address1)? true : false }
                             onChangeText={handleChange('address1')}
                             onBlur={handleBlur('address1')}
@@ -153,6 +159,7 @@ function GetBillingAddy(props) {
                             <View style={styles.inputWrap} >
                                 <TextInput
                                     label="ZIP code"
+                                    autoCompleteType='postal-code'
                                     disabled={(sameAddress)? true : false}
                                     onChangeText={handleChange('zip')}
                                     onBlur={handleBlur('zip')}
