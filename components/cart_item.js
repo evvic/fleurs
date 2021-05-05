@@ -19,6 +19,7 @@ function CartItem(props) {
 
     React.useEffect(() => {
         // this is called when the component is mounted
+        console.log("CART ITEM ID: " + props.cart)
 
         GetProduct()
 
@@ -41,7 +42,7 @@ function CartItem(props) {
         }
         else {
             setError(null)
-            console.log(obj.PRODUCTS[0])
+            //console.log(obj.PRODUCTS[0])
             setLoaded(true)
             let temp = await obj.PRODUCTS[0]
             setProduct(temp)
@@ -72,16 +73,17 @@ function CartItem(props) {
                     
                     <Button
                         title="Place order"
-                        onPress={() => navigation.navigate('Ordering', {
-                            product: product
-                        })}
+                        onPress={() => {
+                            navigation.navigate('Ordering', {
+                                product: product, CartID: props.cart
+                        })}}
                         color="#9AC791" //green
                     />
                 </View>
 
             </View>
             :
-                <></>
+                <ActivityIndicator size="large" color="#0000ff" style={{padding: '50%'}}/>
             }
         </>
         :
@@ -103,9 +105,6 @@ async function AddItemToCart(product_code, cart_id) {
     //action=add as items are beign added here
     const data = await api.put(`/shoppingcart?sessionid=${cart_id}&action=add&productcode=${product_code}`) 
     const obj = await data.data
-
-    console.log(obj)
-
 }
 
 export default CartItem;

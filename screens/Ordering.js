@@ -18,7 +18,7 @@ const Tab = createStackNavigator();
 
 function OrderScreen({ route, navigation }) {
     //get params. If none were passed, inital ones will be used
-    const { product } = route.params;
+    const { product, CartID } = route.params;
     const [cartItems, setCartItems] = useState([])
     var [zipCode, setZipCode] = useState()
     let [selectedDay, setSelectedDay] = useState()
@@ -76,7 +76,7 @@ function OrderScreen({ route, navigation }) {
             <Tab.Screen name="Place Order" options={{ headerShown: false }}>
                 {(props) => <PlaceOrder selectedDay={selectedDay} deliveryAddress={deliveryAddress}
                 billingAddress={billingAddress} token={token} product={product} setReturnHome={setReturnHome} 
-                {...props}/>}
+                CartID={CartID} {...props}/>}
             </Tab.Screen>
         </Tab.Navigator>
     );

@@ -9,7 +9,7 @@ import { styles } from '../styles/global.js'; //CSS equivalent
 //npm install react-native-paper
 import { TextInput } from 'react-native-paper';
 
-function PlaceOrder( props) {
+function PlaceOrder(props) {
     const navigation = useNavigation(); //navigation hook
     var [success, setSuccess] = useState(false)
     var [loading, setLoading] = useState(false)
@@ -26,13 +26,6 @@ function PlaceOrder( props) {
         navigation.addListener('beforeRemove', (e) => {
             console.log("going back = " + goingBack)
             if(!success) return;
-            //else 
-            
-            
-            //e.preventDefault()
-            //navigation.dispatch(StackActions.popToTop());
-            //navigation.dispatch(e.data.action)
-
 
             // Prevent default behavior of leaving the screen
             if(!goingBack) {
@@ -45,24 +38,6 @@ function PlaceOrder( props) {
                 console.log("going back is true i guess")
                 props.setReturnHome(true)
             }
-
-            /* Alert.alert(
-                'Alert Title',
-                'Discard changes?',
-                [
-                    { 
-                        text: "Don't leave", 
-                        style: 'cancel', 
-                        onPress: () => {console.log("Cancel Pressed")} },
-                    {
-                      text: 'Discard',
-                      style: 'destructive',
-                      // If the user confirmed, then we dispatch the action we blocked earlier
-                      // This will continue the action that had triggered the removal of the screen
-                      onPress: () => navigation.dispatch(e.data.action),
-                    },
-                  ]
-            ) */
         })
         
         //anything returned happens when component is unmounted
@@ -82,6 +57,8 @@ function PlaceOrder( props) {
         let resp = await SendPayment(thing) 
         //this function sends thru API and get responce
 
+        if('ORDERTOTAL' in resp) await RemoveItemFromCart(props.CartID, props.product.CODE)
+
         setLoading(false)
 
         if('ORDERTOTAL' in resp) setSuccess(true)
@@ -91,8 +68,6 @@ function PlaceOrder( props) {
 
     return (
         <ScrollView>
-            <Text style={styles.header_text}>PLACE ORDER</Text>
-
             <View style={styles.paymentCard}>
                 <View style={styles.paymentCardContentsWrap }>
                     <View style={styles.paymentCardLeftSide }>
@@ -170,7 +145,7 @@ function PlaceOrder( props) {
                     </>
                     :
                     <>
-                        <Button 
+                        <Button
                             onPress={() => {Processing()}} 
                             title="Place Order"
                             color="#9AC791" //green 
@@ -233,6 +208,27 @@ async function SendPayment(obj) {
     console.log(parsed)
 
     return parsed
+}
+
+async function RemoveItemFromCart(id, code) {
+    console.log("RemoveItemFromCart: " + id + ' and code: ' + code)
+    var api = axios.create({
+        baseURL: 'https://www.floristone.com/api/rest',
+        headers: {'Authorization': `Basic ${auth}`}
+    });
+
+    //action=add as items are beign added here
+    const data = await api.put(`/shoppingcart?sessionid=${id}&action=add&productcode=${code}`) 
+    const obj = await data.data
+
+    if("errors" in obj) {
+        console.log("Error: could not remove item to cart")
+    }
+    else {
+        console.log("successfully removed item to cart")
+    }
+
+    return obj
 }
 
 async function CreateObject(props) {

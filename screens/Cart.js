@@ -13,6 +13,7 @@ function CartScreen({ route, navigation }) {
 
     React.useEffect(() => {
         console.log("non-async cartItems")
+        console.log("CART: CARTID: " + CartID )
 
         UpdateCart()
     }, [])
@@ -38,7 +39,7 @@ function CartScreen({ route, navigation }) {
                 <FlatList 
                     //style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', flexGrow: 0}}
                     data={cartItems}
-                    renderItem={({item}) => <CartItem code={item.CODE} />}
+                    renderItem={({item}) => <CartItem code={item.CODE} cart={CartID} />}
                 />
             :
                 <>
