@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackActions } from '@react-navigation/stack';
 
 import axios from 'axios';
 import { username, password, auth } from './../API_KEY.js'
@@ -41,9 +41,19 @@ function OrderScreen({ route, navigation }) {
         name: "", institution: "", address1: "", address2: "", city: "", state: "",
         zip: "", country: "", phone: "" })
 
-    React.useEffect(() => {
+    const [returnHome, setReturnHome] = useState(false)
 
-    }, [])
+    React.useEffect(() => {
+        if(returnHome) {
+            console.log("navigation.dispatch(StackActions.popToTop())")
+            //navigation.dispatch(StackActions.push('Home'))
+            //navigation.dispatch(StackActions.popToTop());
+            navigation.navigate('Feedback')
+
+            //navigation.navigate('Feedback')
+        }
+
+    }, [returnHome])
 
     return (
         <Tab.Navigator>
@@ -65,7 +75,8 @@ function OrderScreen({ route, navigation }) {
             </Tab.Screen>
             <Tab.Screen name="Place Order" options={{ headerShown: false }}>
                 {(props) => <PlaceOrder selectedDay={selectedDay} deliveryAddress={deliveryAddress}
-                billingAddress={billingAddress} token={token} product={product} {...props}/>}
+                billingAddress={billingAddress} token={token} product={product} setReturnHome={setReturnHome} 
+                {...props}/>}
             </Tab.Screen>
         </Tab.Navigator>
     );

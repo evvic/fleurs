@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, TextInput, Button } from 'react-native';
+import { StackActions } from '@react-navigation/native'; 
 
 export default function Feedback({ navigation, route }) {
     const [feedbackText, setFeedbackText] = React.useState('');
@@ -31,7 +32,8 @@ export default function Feedback({ navigation, route }) {
             title="Done"
             onPress={() => {
               // Pass params back to home screen
-              navigation.navigate('Home', { feedback: feedbackText });
+              //navigation.navigate('Home', { feedback: feedbackText });
+              navigation.dispatch(StackActions.popToTop());
             }}
             color="#dcc2ee"
           />
@@ -40,7 +42,7 @@ export default function Feedback({ navigation, route }) {
           <Button
               title="Update the title"
               //can edit navigation options while on screen
-              onPress={() => navigation.setOptions({ title: 'Updated!' })}
+              onPress={() => navigation.setOptions({ title: 'Thanks for using Fluers' })}
               color="#A7C7E7"
           />
         </View>

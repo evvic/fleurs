@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView, Button, Image, ActivityIndicator } from "react-native";
+import { useNavigation, StackActions } from '@react-navigation/native'; 
+import { Text, View, ScrollView, Button, Image, ActivityIndicator, Alert } 
+    from "react-native";
 import { username, password, auth } from '../API_KEY.js'
 import axios from 'axios';
 import { styles } from '../styles/global.js'; //CSS equivalent
@@ -7,22 +9,67 @@ import { styles } from '../styles/global.js'; //CSS equivalent
 //npm install react-native-paper
 import { TextInput } from 'react-native-paper';
 
-function PlaceOrder(props) {
+function PlaceOrder( props) {
+    const navigation = useNavigation(); //navigation hook
     var [success, setSuccess] = useState(false)
     var [loading, setLoading] = useState(false)
     var [submitted, setSubmitted] = useState(false)
 
+    var goingBack = false
+
+    let Image_Http_URL = { uri: props.product.LARGE };
+
     React.useEffect(() => {
         // this is called when the component is mounted
-        /* setLoading(false)
-        setSuccess(false) */
-        console.log("place order mounted")
+        //if(success) goingBack = true;
+
+        navigation.addListener('beforeRemove', (e) => {
+            console.log("going back = " + goingBack)
+            if(!success) return;
+            //else 
+            
+            
+            //e.preventDefault()
+            //navigation.dispatch(StackActions.popToTop());
+            //navigation.dispatch(e.data.action)
+
+
+            // Prevent default behavior of leaving the screen
+            if(!goingBack) {
+                e.preventDefault();
+                console.log("preventing default action")
+                goingBack = true
+                navigation.dispatch(StackActions.popToTop());
+            }
+            else {
+                console.log("going back is true i guess")
+                props.setReturnHome(true)
+            }
+
+            /* Alert.alert(
+                'Alert Title',
+                'Discard changes?',
+                [
+                    { 
+                        text: "Don't leave", 
+                        style: 'cancel', 
+                        onPress: () => {console.log("Cancel Pressed")} },
+                    {
+                      text: 'Discard',
+                      style: 'destructive',
+                      // If the user confirmed, then we dispatch the action we blocked earlier
+                      // This will continue the action that had triggered the removal of the screen
+                      onPress: () => navigation.dispatch(e.data.action),
+                    },
+                  ]
+            ) */
+        })
         
         //anything returned happens when component is unmounted
         return () => {
             console.log("place order unmounted")
         };
-    }, [])
+    }, [navigation, success])
 
     async function Processing() {
         setSubmitted(true)
@@ -40,7 +87,7 @@ function PlaceOrder(props) {
         if('ORDERTOTAL' in resp) setSuccess(true)
     }
 
-    let Image_Http_URL = { uri: props.product.LARGE };
+    
 
     return (
         <ScrollView>
@@ -52,7 +99,7 @@ function PlaceOrder(props) {
                         <Image
                             source={Image_Http_URL} 
                             style={{width: '80%', aspectRatio: .8}}
-                            imageStyle={{borderRadius: 5}}
+                            imageStyle={{borderRadius: 20}}
                         />
                     </View>
                     <View style={styles.paymentCardRightSide }>
@@ -112,7 +159,7 @@ function PlaceOrder(props) {
                         <>
                             {(success)?
                             <>
-                                <Text>SUCCESS</Text>
+                                <Text>NAVIGATE TO FEEDBACK PAGE OR SOMETHING SO USER CAN'T GO ACKWARDS AND ORDER AGAIN</Text>
                             </>
                             :
                             <>
