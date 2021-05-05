@@ -20,8 +20,9 @@ export default function Pickers(props) {
                     onValueChange={(itemValue, itemIndex) => props.setCategory(itemValue)}
                     >
                         <Picker.Item label={"All"} value={"all"} />
-                        <Picker.Item label={"Birthday"} value={"bd"} />
                         <Picker.Item label={"Anniversary"} value={"an"} />
+                        <Picker.Item label={"Best Sellers"} value={"bs"} />
+                        <Picker.Item label={"Birthday"} value={"bd"} />
                         <Picker.Item label={"Everyday"} value={"ao"} />
                         <Picker.Item label={"Thank You"} value={"ty"} />
                         <Picker.Item label={"Love & Romance"} value={"lr"} />
@@ -29,7 +30,29 @@ export default function Pickers(props) {
                         <Picker.Item label={"New Baby"} value={"nb"} />
                         <Picker.Item label={"Centerpieces"} value={"c"} />
                         <Picker.Item label={"Fruit Baskets"} value={"x"} />
-                        <Picker.Item label={"Flowers Under $60"} value={"u61"} />
+                        <Picker.Item label={""} value={"all"} />
+
+                        <Picker.Item label={"Christmas"} value={"cm"} />
+                        <Picker.Item label={"Easter"} value={"ea"} />
+                        <Picker.Item label={"Valentines Day"} value={"vd"} />
+                        <Picker.Item label={"Mothers Day"} value={"md"} />
+                        <Picker.Item label={""} value={"md"} />
+
+                        <Picker.Item label={"Flowers Under $60"} value={"u60"} />
+                        <Picker.Item label={"$60 to $80"} value={"60t80"} />
+                        <Picker.Item label={"$80 to $100"} value={"80t100"} />
+                        <Picker.Item label={"Above $100"} value={"a100"} />
+                        <Picker.Item label={""} value={"a100"}/>
+
+                        <Picker.Item label={"Funeral Table"} value={"fa"} />
+                        <Picker.Item label={"Funeral Baskets"} value={"fb"} />
+                        <Picker.Item label={"Funeral Sprays"} value={"fs"} />
+                        <Picker.Item label={"Funeral Inside Casket"} value={"fl"} />
+                        <Picker.Item label={"Funeral Wreaths"} value={"fw"} />
+                        <Picker.Item label={"Funeral Hearths"} value={"fh"} />
+                        <Picker.Item label={"Funeral Crosses"} value={"fx"} />
+                        <Picker.Item label={"Funeral Casket Sprays"} value={"fc"} />
+                        <Picker.Item label={"Funeral Urn Arrangements"} value={"fu"} />
                     </Picker>
                 </View>
                 <View style={styles.homeCardLeftSide}>

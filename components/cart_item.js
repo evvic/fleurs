@@ -63,6 +63,7 @@ function CartItem(props) {
                 >
                     <View style={styles.productCardContents}>
                         <Text>${product.PRICE}</Text>
+                        <Text>{product.CODE}</Text>
                     </View>
                 </ImageBackground>
                 <View style={styles.productCardContents}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, ScrollView } from 'react-native';
 import styles from '../styles/home.js'
 import Products from './../components/products.js'
 import Pickers from './../components/pickers.js'
@@ -109,22 +109,22 @@ function HomeScreen({ navigation, route }) {
             </>
             :
             <Text>loading...</Text>}
-            
-            {/* <Text>{welcome}</Text> */}
-            {(category)?
-            <Products category={category} sorttype={sorttype} sessionid={cartID}
-              loadedProducts={loadedProducts} setLoadedProducts={setLoadedProducts}/>
-            :
-            <Text>select category</Text>
-            }
-            <View style={{paddingVertical: 80, margin: 40}}>
-              <Button
-                title="Write feedback"
-                onPress={() => navigation.navigate('Feedback')}
-                color="#A7C7E7"
-              />
-            </View>
-            
+            <ScrollView>
+              {/* <Text>{welcome}</Text> */}
+              {(category)?
+              <Products category={category} sorttype={sorttype} sessionid={cartID}
+                loadedProducts={loadedProducts} setLoadedProducts={setLoadedProducts}/>
+              :
+              <Text>select category</Text>
+              }
+              <View style={{paddingVertical: 20, margin: 20}}>
+                <Button
+                  title="Write feedback"
+                  onPress={() => navigation.navigate('Feedback')}
+                  color="#A7C7E7"
+                />
+              </View>
+            </ScrollView>
             
         </View>
     );

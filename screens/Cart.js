@@ -13,12 +13,11 @@ function CartScreen({ route, navigation }) {
     const [updated, setUpdated] = React.useState(false)
 
     React.useEffect(() => {
-
         UpdateCart()
     }, [updated])
 
     async function UpdateCart() {
-        setCartItems([])
+        //setCartItems([])
         let temp = await GetCart(CartID, setError)
         console.log(temp)
         if(temp == null) console.log("was an error in GetCart")
@@ -26,8 +25,6 @@ function CartScreen({ route, navigation }) {
         setCartItems(temp)
         setUpdated(false)
     }
-
-    //keep styling above card
 
     return (
         <ScrollView>
@@ -52,7 +49,8 @@ function CartScreen({ route, navigation }) {
                 :
                 <View style={styles.productCard}>
                     <View style={styles.productCardContents}>
-                        <Text style={styles.header_text_centered}>😭 Oh no! The cart is empty!</Text>
+                        <Text style={styles.header_text_centered}>😭 Oh no! The basket is empty!</Text>
+                        <Text style={styles.header_text_centered}>🌹🌷💐🌷🌹</Text>
                     </View>
                 </View>
                 }
@@ -67,8 +65,6 @@ function CartScreen({ route, navigation }) {
       </ScrollView>
     );
 }
-//navigation.push creates a new page (can make duplicates)
-//navigation.navigate goes to the page
 
 //takes the session_ID and returns an object/array of all itemsin the cart
 async function GetCart(sessionid, setError) {
