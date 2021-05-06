@@ -14,3 +14,6 @@ web-build/
 
 # stores my API key and it's password
 API_KEY.js
+
+# google console key & expo-fleurs key
+keys/
