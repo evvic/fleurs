@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native'; 
-import { withNavigation } from '@react-navigation/native';  
-import { NavigationContext } from '@react-navigation/native';
-
-import { StyleSheet, Text, View, Image, Button, Keyboard,
-    TouchableWithoutFeedback, ScrollView } from "react-native";
+/* import { withNavigation } from '@react-navigation/native';  
+import { NavigationContext } from '@react-navigation/native'; */
+import { Text, View, Image, Button, Keyboard, ScrollView } from "react-native";
 import { username, password, auth } from '../API_KEY.js'
 import axios from 'axios';
 import moment from 'moment'
@@ -30,7 +28,6 @@ function GetZipCode(props) {
 
     React.useEffect(() => {
         // this is called when the component is mounted
-        console.log("zip code changing")
         
         if(props.zipCode && props.zipCode.toString().length == 5) {
             console.log("zip code has 5 nums")
@@ -40,12 +37,12 @@ function GetZipCode(props) {
 
         //anything returned happens when component is unmounted
         return () => {
-            console.log("product unmounted")
+            console.log("zip code screen unmounted")
         };
     }, [props.zipCode])
 
     async function FormatAvailableDates(zip) {
-        console.log("FormatAvailableDates()")
+        //console.log("FormatAvailableDates()")
         let datesArr = await GetDeliveryDates(zip)
 
         if(datesArr.length > 1) {
@@ -156,7 +153,7 @@ async function GetDeliveryDates(zip) {
     const data = await api.get(url)
     const obj = await data.data
 
-    console.log(obj.DATES)
+    //console.log(obj.DATES)
     //let temp = await obj.PRODUCTS[0]
 
     return obj.DATES

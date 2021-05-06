@@ -7,13 +7,11 @@ import axios from 'axios';
 
 function Product(props) {
     const navigation = useNavigation(); //navigation hook
-    let [iconimg, setIconimg] = useState(null)  //weather icon description
     const [expanded, setExpanded] = useState(false)   
+    let Image_Http_URL = { uri: props.obj.LARGE };
 
     React.useEffect(() => {
         // this is called when the component is mounted
-        console.log("Product mounted~~")
-        console.log(props.obj.LARGE)
 
         //anything returned happens when component is unmounted
         return () => {
@@ -21,15 +19,11 @@ function Product(props) {
         };
     }, [])
 
-    
-    let Image_Http_URL = { uri: props.obj.LARGE };
-
     return (
         <View style={styles.productCard}>
             <Text style={styles.header_text}>{props.obj.NAME}</Text>
             <TouchableOpacity onPress={() => {
-                setExpanded(!expanded)
-                console.log('image clicked')
+                    setExpanded(!expanded)
                 }}>
                 <ImageBackground 
                     source={Image_Http_URL} 
@@ -67,7 +61,6 @@ function Product(props) {
 
 async function AddItemToCart(product_code, cart_id) {
     //PUT /shoppingcart?sessionid={SESSIONID}&action=add&productcode={PRODUCTCODE}
-    console.log("AddItemToCart: " + cart_id)
     var api = axios.create({
         baseURL: 'https://www.floristone.com/api/rest',
         timeout: 2000,
@@ -88,8 +81,6 @@ async function AddItemToCart(product_code, cart_id) {
     }
 
     console.log(obj)
-
 }
-
 
 export default Product;
