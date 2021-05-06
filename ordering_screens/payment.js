@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native'; 
-import { StyleSheet, Text, View, Button, WebView, ActivityIndicator } from "react-native";
+import { Text, View, Button, WebView, ActivityIndicator } from "react-native";
 import { username, password, auth } from '../API_KEY.js'
 import axios from 'axios';
 import ContentView from './content_view.js'
 import { styles } from '../styles/global.js'; //CSS equivalent
 
-//npm install react-native-paper
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TextInput } from 'react-native-paper';
 import { Formik } from "formik";
 import * as yup from 'yup'
@@ -14,8 +14,6 @@ import * as yup from 'yup'
 const ReviewSchema = yup.object({
     name: yup.string().required().min(1),
     number: yup.string().required().length(16).matches(/^\d+$/, "must be all digits"),
-    //month: yup.string().required().max(2).matches(/^\d+$/, "must be all digits"),
-    //year: yup.string().required().length(4).matches(/^\d+$/, "must be all digits"),
     CVC: yup.string().required().length(3).matches(/^\d+$/, "must be all digits"),
     date: yup.string().required().length(7)
 })
@@ -78,11 +76,10 @@ function Payment(props) {
         //console.log('authData', authData)
 
         setLoading(false)
-
     }
 
     return (
-        <View>
+        <KeyboardAwareScrollView>
             <Formik
                 initialValues={{name: props.billingAddress.name, number: "4242424242424242", 
                     /* month: "01", year: "2022", */ date: "01/2022", CVC: "111"}}
@@ -117,8 +114,8 @@ function Payment(props) {
                                 value={values.number}
                             />
                             <Text style={styles.error_text}>{touched.number && errors.number}</Text>
-                            <View /* style={styles.ccRow} */>
-                                <View>
+                            <View style={styles.row}>
+                                <View style={styles.inputWrap}>
                                     <TextInput
                                         label="Expiration date"
                                         editable={false}
@@ -134,7 +131,7 @@ function Payment(props) {
                                     />
                                     <Text style={styles.error_text}>{touched.date && errors.date}</Text>
                                 </View>
-                                <View /* style={styles.ccInputWrap} */ >
+                                <View style={styles.inputWrap} >
                                     <TextInput
                                         label="CVC"
                                         error={(touched.month && errors.month)? true : false }
@@ -149,6 +146,7 @@ function Payment(props) {
                             <Button 
                             onPress={handleSubmit} 
                             title="Submit"
+                            color="#9AC791"
                             disabled={completed && !loading && props.token == null} />
                         </View>
                     </View>
@@ -180,7 +178,7 @@ function Payment(props) {
                 </>
             }
             
-        </View>
+        </KeyboardAwareScrollView>
     );
 }
 

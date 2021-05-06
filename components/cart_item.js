@@ -67,29 +67,31 @@ function CartItem(props) {
                     </View>
                 </ImageBackground>
                 <View style={styles.productCardContents}>
+                    <View style={styles.horizontalWrap}>
+                        <View style={{padding: 5, flex: 1}}>
+                            <Button
+                                title="Place order"
+                                onPress={() => {
+                                    navigation.navigate('Ordering', {
+                                        product: product, CartID: props.cart
+                                })}}
+                                color="#9AC791" //green
+                            />
+                        </View>
+                        <View style={{padding: 5, flex: 1}}>
+                            <Button
+                                title="Delete Item"
+                                onPress={async () => {
+                                    let resp = await RemoveItemFromCart(props.cart, product.CODE)
+                                    console.log("deleted? " + resp)
+                                    props.setUpdated(true)
+                                }}
+                                color="#ff6666" //pastel red
+                            />
+                        </View>
+                    </View>
                     <Text style={{fontSize: 1}}>.</Text>
                     <Text style={styles.paragrah_text}>{product.DESCRIPTION}</Text>
-                    <View style={{paddingVertical: 10}}>
-                        <Button
-                            title="Place order"
-                            onPress={() => {
-                                navigation.navigate('Ordering', {
-                                    product: product, CartID: props.cart
-                            })}}
-                            color="#9AC791" //green
-                        />
-                    </View>
-                    <View style={{paddingVertical: 10}}>
-                        <Button
-                            title="Delete Item"
-                            onPress={async () => {
-                                let resp = await RemoveItemFromCart(props.cart, product.CODE)
-                                console.log("deleted? " + resp)
-                                props.setUpdated(true)
-                            }}
-                            color="#ff6666" //pastel red
-                        />
-                    </View>
                 </View>
 
             </View>

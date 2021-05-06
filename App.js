@@ -11,14 +11,11 @@ import Feedback from './screens/Feedback.js'
 import { username, password, auth } from './API_KEY.js' //base64 encoded API key
 import OrderScreen from './screens/Ordering.js';
 
-//https://github.com/sbycrosz/react-native-credit-card-input
-// ^ use this for cc info?
-
 const Stack = createStackNavigator();
 
 export default function App() {
   //cart
-  const [sessionID, setSessionID] = useState()
+  var [sessionID, setSessionID] = useState()
 
   //moved create cart ID to Home, then lifts state up
   async function CreateCart() {

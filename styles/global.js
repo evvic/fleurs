@@ -113,7 +113,7 @@ export const styles = StyleSheet.create ({
     ccRow: {
         flex: 1,
         flexDirection: "row",
-        marginBottom: 100
+        //marginBottom: 100
     },
     ccInputWrap: {
         flex: 1,

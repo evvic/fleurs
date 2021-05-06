@@ -33,13 +33,16 @@ function CartScreen({ route, navigation }) {
                     <Text style={styles.header_text_centered}>Basket</Text>
                     <Text style={styles.subtle_text}>Cart ID</Text>
                     <Text style={styles.subtle_text}>{JSON.stringify(CartID)}</Text>
+                    {(cartItems !== undefined)?
                     <Text style={styles.subtle_text}>Items in cart: {cartItems.length}</Text>
+                    :
+                    <></>}
                 </View>
             </View>
 
             {(!error)?
             <>
-                {(cartItems.length > 0)?
+                {(cartItems !== undefined && cartItems.length > 0)?
                     <FlatList 
                     //style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', flexGrow: 0}}
                     data={cartItems}

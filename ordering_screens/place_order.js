@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { useNavigation, StackActions } from '@react-navigation/native'; 
-import { Text, View, ScrollView, Button, Image, ActivityIndicator, Alert } 
-    from "react-native";
+import { Text, View, ScrollView, Button, Image, ActivityIndicator } from "react-native";
 import { username, password, auth } from '../API_KEY.js'
 import axios from 'axios';
 import { styles } from '../styles/global.js'; //CSS equivalent
-
-//npm install react-native-paper
-import { TextInput } from 'react-native-paper';
 
 function PlaceOrder(props) {
     const navigation = useNavigation(); //navigation hook

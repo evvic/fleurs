@@ -1,16 +1,9 @@
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'; 
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { WebView } from 'react-native-webview'
 
 //how to reset to previous commit: https://stackoverflow.com/a/59654694
-
-/* inside HTML <head>
-<script type="text/javascript"
-    src="${props.authorizeData.AUTHORIZENET_URL}"
-    charset="utf-8">
-</script>
-*/
 
 const ContentView = (props) => { 
     const navigation = useNavigation(); //navigation hook
@@ -134,8 +127,6 @@ const ContentView = (props) => {
         getNonce()
     `
 
-    console.log(props.cardInfo)
-
     return (
         /* WebView should be hidden. View style has opacity of 0*/
         /* making the dimensions (width & height) very small as well*/
@@ -175,9 +166,8 @@ const ContentView = (props) => {
                 //allowFileAccessFromFileURLs={true}
                 allowUniversalAccessFromFileURLs={true}
             />
-        </View>)   
-
-    
+        </View>
+    )   
 }
 
 export default ContentView

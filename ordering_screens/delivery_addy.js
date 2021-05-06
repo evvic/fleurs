@@ -146,7 +146,7 @@ function GetDeliveryAddy(props) {
                                 />
                             </View>
                         </View>
-                        <Button onPress={handleSubmit} title="Submit" />
+                        <Button onPress={handleSubmit} title="Submit" color="#9AC791"/>
                     </View>
                 </View>
                 )}

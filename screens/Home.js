@@ -4,14 +4,7 @@ import styles from '../styles/home.js'
 import Products from './../components/products.js'
 import Pickers from './../components/pickers.js'
 import { username, password, auth } from './../API_KEY.js'
-import { returnCategories } from './../getcategories.js'
 import axios from 'axios';
-
-//https://github.com/react-native-picker/picker
-import { Picker } from '@react-native-picker/picker'; //npm install @react-native-picker/picker --save
-import { FlatList } from 'react-native-gesture-handler';
-
-import { data } from '../data.js'
 
 // the navigation prop is passed in to every screen component
 function HomeScreen({ navigation, route }) {
@@ -21,8 +14,6 @@ function HomeScreen({ navigation, route }) {
     let [welcome, setWelcome] = React.useState("null")
     const [category, setCategory] = React.useState("all");
     const [sorttype, setSorttype] = React.useState(null)
-    //const [categories, setCategories] = React.useState([])
-    //const [listCategories, setListCategories] = React.useState([<Picker.Item label="temp" value="temp" />])
     const [loaded, setLoaded] = React.useState(false)
     const [loadedProducts, setLoadedProducts] = React.useState(true)
 
@@ -57,9 +48,9 @@ function HomeScreen({ navigation, route }) {
         StartUp()
     
         if (route.params?.feedback) {
-        // Post updated, do something with `route.params.feedback`
-        // For example, send the post to the server
-        console.log(route.params?.feedback)
+          // Post updated, do something with `route.params.feedback`
+          // For example, send the post to the server
+          console.log(route.params?.feedback)
         }
         return () => {
             console.log("home unmounted")
@@ -81,27 +72,17 @@ function HomeScreen({ navigation, route }) {
     }, [navigation]);
 
     async function StartUp() {
-        let temp = await Intro()
-        setWelcome(temp)
+      let temp = await Intro()
+      setWelcome(temp)
 
-        temp = await CreateCart()
-        setCartId(temp)
+      temp = await CreateCart()
+      setCartId(temp)
 
-        //categories will be preset
-        /* temp = await returnCategories()
-        setCategories(temp) */
-
-        //console.log("teehee" + categories)
-
-        /* setListCategories(temp.map(item => {
-            <Picker.Item label={item.DISPLAY} value={item.CATEGORY} />
-        })) */
-        setLoaded(true)
-        }
+      setLoaded(true)
+    }
 
     return (
         <View>
-            
             {(loaded)? 
             <>
               <Pickers category={category} setCategory={setCategory} sorttype={sorttype}
@@ -110,7 +91,6 @@ function HomeScreen({ navigation, route }) {
             :
             <Text>loading...</Text>}
             <ScrollView>
-              {/* <Text>{welcome}</Text> */}
               {(category)?
               <Products category={category} sorttype={sorttype} sessionid={cartID}
                 loadedProducts={loadedProducts} setLoadedProducts={setLoadedProducts}/>
@@ -129,18 +109,6 @@ function HomeScreen({ navigation, route }) {
         </View>
     );
 }
-//works on android but not web
-{/* <View style={styles.dropdown_container}>
-  <Dropdown
-    label="Simple dropdown"
-    data={data}
-    value={category}
-    onChange={onChangeSS}
-  />
-</View> */}
-
-//works in web but not in android?
-
 
 async function Intro() {
   const url = "https://www.floristone.com/api/rest/floristone/welcome"

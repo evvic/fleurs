@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, FlatList } from 'react-native';
 import { createStackNavigator, StackActions } from '@react-navigation/stack';
-
-import axios from 'axios';
-import { username, password, auth } from './../API_KEY.js'
 
 //ordering components
 import GetZipCode from '../ordering_screens/get_zip_code.js'    // sets shipping zip code & delivery day
@@ -12,14 +8,12 @@ import GetBillingAddy from '../ordering_screens/billing_addy.js'// sets billing 
 import Payment from '../ordering_screens/payment.js'            // gets payment & returns token
 import PlaceOrder from '../ordering_screens/place_order.js'     // places orders with FLoristOne
 
-import { set } from 'react-native-reanimated';
-
 const Tab = createStackNavigator();
 
 function OrderScreen({ route, navigation }) {
     //get params. If none were passed, inital ones will be used
     const { product, CartID } = route.params;
-    const [cartItems, setCartItems] = useState([])
+    //const [cartItems, setCartItems] = useState([])
     var [zipCode, setZipCode] = useState()
     let [selectedDay, setSelectedDay] = useState()
     const [token, setToken] = useState(null, () => {
@@ -45,12 +39,8 @@ function OrderScreen({ route, navigation }) {
 
     React.useEffect(() => {
         if(returnHome) {
-            console.log("navigation.dispatch(StackActions.popToTop())")
-            //navigation.dispatch(StackActions.push('Home'))
-            //navigation.dispatch(StackActions.popToTop());
+            //after order is placed, user is redirected to feedback page
             navigation.navigate('Feedback')
-
-            //navigation.navigate('Feedback')
         }
 
     }, [returnHome])

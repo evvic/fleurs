@@ -30,8 +30,7 @@ export default function Pickers(props) {
                         <Picker.Item label={"New Baby"} value={"nb"} />
                         <Picker.Item label={"Centerpieces"} value={"c"} />
                         <Picker.Item label={"Fruit Baskets"} value={"x"} />
-                        <Picker.Item label={""} value={"all"} />
-
+                        {/* <Picker.Item label={""} value={"all"} /> */}
                         <Picker.Item label={"Christmas"} value={"cm"} />
                         <Picker.Item label={"Easter"} value={"ea"} />
                         <Picker.Item label={"Valentines Day"} value={"vd"} />
@@ -73,11 +72,10 @@ export default function Pickers(props) {
                 {(props.loadedProducts)?
                 <></> //products have loaded
                 :
-                <View>
+                <View style={{paddingBottom: 5}}>
                     <ActivityIndicator size="large" color="#0000ff" />
                 </View>
             }
-              
             </View>
     )
 }

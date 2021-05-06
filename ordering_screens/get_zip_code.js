@@ -115,6 +115,7 @@ function GetZipCode(props) {
                         <Text style={styles.subHeaderText}>Selected delivery day is {props.selectedDay}.</Text>
                         <Button
                             title="Deliver"
+                            color="#9AC791" //green
                             //because this is a nested navigator, it's a bit complicated...
                             onPress={() => navigation.navigate('Ordering', { screen: 'Delivery Address' })}
                         />

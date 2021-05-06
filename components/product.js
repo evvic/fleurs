@@ -1,16 +1,9 @@
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native'; 
 import { Text, View, Button, ImageBackground, Dimensions, TouchableOpacity } from "react-native";
-import { Card,  } from 'react-native-elements' //npm install react-native-elements
 import { username, password, auth } from '../API_KEY.js'
 import { styles } from '../styles/product.js'; //CSS equivalent
 import axios from 'axios';
-
-import Image from 'react-native-scalable-image';
-
-//https://github.com/WrathChaos/react-native-apple-card-views
-//npm i react-native-apple-card-views //has 3 dependencies
-//import { AppleCard } from 'react-native-apple-card-views'
 
 function Product(props) {
     const navigation = useNavigation(); //navigation hook

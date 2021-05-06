@@ -75,4 +75,11 @@ export const styles = StyleSheet.create ({
         //
         flex: 1
     },
+    horizontalWrap: {
+        flex: 1,
+        flexDirection:'row',
+        alignItems:'center', //
+        //marginHorizontal: 10,
+        margin: 5
+    },
 })
