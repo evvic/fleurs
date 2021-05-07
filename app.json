@@ -2,9 +2,9 @@
   "expo": {
     "name": "fleurs",
     "slug": "fleurs",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon2.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -24,6 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "versionCode": 2,
       "package": "com.ewic.fleurs"
     },
     "web": {
