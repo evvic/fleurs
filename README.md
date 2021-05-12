@@ -17,9 +17,11 @@ Fleurs is not yet finished, but a beta state is available on the [Play Store](ht
 
 
 
-### Release 1
+### Release 2
 
-Fleurs app is still in alpha. Currently a user can select a flower, add it to their basket, and "order" it. Ordering the flower involves filling out the the delivery date, delivery address, billing address, and credit card info (prefilled with test data). 
+Fleurs app is now in beta! Currently a user can select a flower, add it to their basket, and "order" it. Ordering the flower involves filling out the the delivery date, delivery address, billing address, and credit card info (prefilled with test data). 
+
+> :warning: **Creating payment token is not secure**: once this is fixed the user can then enter their own payment info. 
 
 This project relies heavily on React Navigation, a tool to allow creating multiple screens the user can navigate around with. The functions documented in this project will be organized by their screens and sub-screens.
 
@@ -44,6 +46,12 @@ Table of Contents
 ## Home
 
 This is the Home screen
+
+This screen displays a FlatList of products in cards given a certain cateory or even a sort type. The category and sort type can be selected from the 2 pickers at the top of the page that are inside the pickers component.
+
+### Pickers component
+
+This compnent containts no functions besides the useEffect() hook which monitors changes in the category or sorttype props. The user can select different categories or sort types and the sate is lifted up back to the home screen.
 
 #### async function StartUp()
 - @parameters: none
@@ -84,6 +92,22 @@ This is the Cart screen
 #### async function GetCart()
 - @parameters: CartID
 - @return: [{}] array of objects(products) with given cart ID
+
+Every item in the cart creates a new CartItem component from FlatList
+
+### CartItem
+
+Every item in the cart has 2 buttons: "PLACE ORDER" and "REMOVE".
+- PLACE ORDER -> navigates to order screen
+- REMOVE -> calls RemoveItemFromCart()
+
+#### async function GetProduct() 
+- @parameters: none
+- @return: object containg error (failed getting product) or containing product info (succeeded gerrign product).
+
+#### async RemoveItemFromCart(id, code)
+- @parameters: string of cart/session ID and product code to be removed from cart.
+- @return: API post object: either an object containg array of errors (failure to process order) or object containing success message (success).
 
 ## Ordering
 
@@ -148,6 +172,8 @@ This is the Billing Address sub screen in Ordering
 
 This is the Payment sub screen in Ordering
 
+> :warning: **Credit card number & Exp. date are locked**: while the token process is still not confirmed secure, these fields will be locked.
+
 #### function AddCardInfo(info)
 - @parameters: object containing each part of the card
 - @return: none
@@ -175,32 +201,57 @@ This is the Payment sub screen in Ordering
 
 This is the Process Order sub screen in Ordering
 
-This screen is not fully developed with its intended features yet so there are no functions here. It simply displays the important data:
-  * product name & price
-  * delivery address
-  * token value
+This screen also has a React Native Navigation onBackPressed listener where after the order hss been successfully placed, going backwards instead takes the user to the Feedback screen, instead of being able ot go to the previous order page and recreate a token for a product they alread purchased.
+
+The user gets a summary of the product, total cost, delivery and billing address, and then has the button to "place order". When the "place order" button has been pressed, mulltipl functions are called:
+
+#### async function Processing() 
+- @parameters: none 
+- @return: none
+- sets submitted & loading state to true.
+- Calls CreateObject(props) which returns the object to be sent to the FloristOne API.
+- Calls SendPayment(thing) which accepts the previosuly created oject and passes that to the API.
+- If SendPayment() returns a non-error object (success), call RemoveItemFromCart() to remove the bought item from user's cart.
+- All async events done: set loading state to false. 
+- If SendPayment() returned a non-error object (success), set success state to true.
+
+#### async function SendPayment(obj) 
+- @parameters: created payment object containing all data.
+- @return: API post object: either an object containg array of errors (failure to process order) or object containg order payment data (success).
+- Axios post the placing order object and receive an object back.
+
+#### async RemoveItemFromCart(id, code)
+- @parameters: string of cart/session ID and product code to be removed from cart.
+- @return: API post object: either an object containg array of errors (failure to process order) or object containing success message (success).
+
+#### async function CreateObject(props)
+- @parameters: has props passed as the only parameter but this includes the delivery address, billing address, product(s) and their price, a message, delivery date, and code, ccinfo (payment token), then finally the order total. 
+- @return: jsut returns the props but formatted correctly for being passed to the API.
+
+#### function PhormatPhone(num)
+- @parameters: 10 digit number.
+- @return: the 10 digit phone number formatted with US standards: +1 (###) ###-####
 
 ## Feedback
 
 This is the Feedback screen
 
-This screen contains no functions either. It is mostly used as an example of capturing user input then transferring it back to the Home screen after the user goes back. it also tests changing the title of the screen with a button.
+This screen contains no functions either. It is mostly used as an example of capturing user input then transferring it back to the Home screen after the user goes back. It also tests changing the title of the screen with a button.
 
 
 # Bugs
 
-There are currently LOTS of bugs and I am aware of them and plan on fixing them very soon.
+There are still many ugs but I would argue that basic user experience would not have them occur.
+I have removed the most fatal bugs and now the app is fairly stable.
 
 - On start up
-  * The cart ID sets the state in the Home screen and is passed to the Cart screen, but App.js does not get the updated state and therefore when clsoing the app, it destroys a cart with an ID of 'undefined'.
-  * For a few seconds after the products have loaded onto the screen, pressing the 'add to basket' button will not work because the cart ID ahs not been updated yet.
+  * For a few seconds after the products have loaded onto the screen, pressing the 'add to basket' button will not work because the cart ID has not been updated yet.
 - API Calls
-  * The API calls do not catch any errors. I know that if an error occurs from the call the API will return just an array of 'error' objects and I need to add a condition to each API call that can catch those error outputs (doesn't happen frequently at all).
-  * TimeOut: sometimes an API call will timeout after 2000ms, I need to either increase the timeout (Axios) or at least add a catch to the calls when a timeout occurs.
+  * ~~The API calls do not catch any errors.~~
 - Cart
   * If the user adds an item to the basket then quickly opens the basket page, the product might not appear because it has to be added to the cart over the API then the basket calls the API to retrieve the cart and the array of added products.
+  * When the user removes an item from the cart, sometimes the cart will not remove the item becasue it has the wrong product code(????) for some reason.
 - Ordering
-  * If the user enters a 5 digit ZIP code too quickly, there could be an API call error and the user needs to remove a digit then re-add it to "refresh" the API call. I need to give some sort of notification if this error occurs or automatically reload the call.
-  * The calendar can be a bit buggy (since it's a library I'm not sure if I can fix much), the previous and next buttons sometimes don't work so the user must swipe to navigate the months.
-  * Entering actual credit card inforation is NOT good. The method of creating the token is not secure. I have pre-enetered credit card info that an be changed but should probably be left as is.
-  * When pressing the submit button on the credit card info, the token is generated and the navigation navigates to the place order page, but the token is like a callback that is set a few seconds after the page has already been navigated to. I honestly don't understand how that part is working.
+  * If the user enters a 5 digit ZIP code too quickly, there could be an API call error and the user needs to remove a digit then re-add it to "refresh" the API call. I need to give some sort of notification if this error occurs or automatically reload the call (I haven't been able to replicate this bug in awhile).
+  * The calendar can be a bit buggy (since it's a library I'm not sure if I can fix much), the previous and next buttons sometimes don't work so the user must swipe to navigate the months (does not hurt user experince nearly at all).
+  * Entering actual credit card inforation is NOT allowed until I learn how to confirm the token is created securely.
