@@ -7,6 +7,16 @@ Using the Florist One API, the app will allow users to buy flowers and ship them
 |Language| React Native |
 | API | [Florist One](https://www.floristone.com/api/) |
 
+Fleurs is not yet finished, but a beta state is available on the [Play Store](https://play.google.com/store/apps/details?id=com.ewic.fleurs) where the flower shopping experience can be tested but no flowers can be actually bought.
+
+| Platform | Available |
+|--------------|--------------|
+| Apple App Store| n/a (yet) |
+| Google Play Store | [fleurs](https://play.google.com/store/apps/details?id=com.ewic.fleurs) |
+| Website | (n/a) yet |
+
+
+
 ### Release 1
 
 Fleurs app is still in alpha. Currently a user can select a flower, add it to their basket, and "order" it. Ordering the flower involves filling out the the delivery date, delivery address, billing address, and credit card info (prefilled with test data). 
