@@ -9,12 +9,13 @@ Using the Florist One API, the app will allow users to buy flowers and ship them
 
 Fleurs is not yet finished, but a beta state is available on the [Play Store](https://play.google.com/store/apps/details?id=com.ewic.fleurs) where the flower shopping experience can be tested but no flowers can be actually bought.
 
+Screen cast: https://youtu.be/_TEz6gooy1o
+
 | Platform | Available |
 |--------------|--------------|
 | Apple App Store| n/a (yet) |
 | Google Play Store | [fleurs](https://play.google.com/store/apps/details?id=com.ewic.fleurs) |
 | Website | (n/a) yet |
-
 
 
 ### Release 2
